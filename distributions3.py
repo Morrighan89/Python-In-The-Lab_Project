@@ -4,12 +4,12 @@ import matplotlib.pylab as plt
 
 class Dist:
     """
-    This class load the data for a single freq and a single type
+    This class load the data given a filename
     """
-    def __init__(self, filename, avoid_zeros=True):
+    def __init__(self, filename, is_avoid_zeros=True):
         # It is better to make general x,y arrays
         self.x, self.y = np.loadtxt(filename, comments="#", unpack=True)
-        if avoid_zeros:
+        if is_avoid_zeros:
             s_len = len(self.x)
             self.x, self.y = self.avoid_zeros()
             print("%i lines deleted" % (s_len - len(self.x)))
@@ -32,7 +32,6 @@ class DistCollector:
     """
     this is class to collect all the filenames 
     in a dictionary of instances
-
     Parameters:
     ===========
     mainDir: str
@@ -40,15 +39,17 @@ class DistCollector:
     maxLex: int, opt
         max lenght of string describing the file types to consider
         such in F64ac_freq_filetype.dat
+    material: string, opt
+        the material used in the experiment
     """
     def __init__(self, mainDir, maxLen=1, material="F64ac"):  
         self._mainDir = mainDir
         # Check if the dist_type exists
         # How can we do it?
-        dis_types = self._get_distribution_types(maxLen)
-        print(dis_types)
+        self.dis_types = self._get_distribution_types(maxLen)
+        print(self.dis_types)
         self.distrs = dict()
-        for dis_type in dis_types:
+        for dis_type in self.dis_types:
             pattern = "%s_????_%s.dat" % (material, dis_type)
             pattern = os.path.join(self._mainDir, pattern)
             filenames = sorted(glob.glob(pattern))
@@ -60,6 +61,13 @@ class DistCollector:
                 self.distrs[dis_type][freq] = Dist(fname)
 
     def plot(self, dis_type, loglog=True):
+        """
+        plot all the distributions
+        just giving the type ('S', 'T', 'E', etc)
+        """
+        if dis_type not in self.dis_types:
+            print("Type %s does not exist, please check it" % dis_type)
+            return
         fig = plt.figure()
         ax = fig.add_subplot(111)
         for freq in sorted(self.distrs[dis_type]):
@@ -70,8 +78,19 @@ class DistCollector:
             else:
                 ax.plot(d.x, d.y, label=lb)
         ax.legend(numpoints=1)
+        # Here we need to explicity say to show the plot
+        plt.show()
 
     def _get_distribution_types(self, maxLen=1):
+        """
+        find the type of distributions (denoted by 'S', 'T', etc)
+        looking at the last character of the filenames 
+        as in F64ac_0.02_S.dat
+        Parameters:
+        ===========
+            maxLen: int, opt
+            max length of the string to be searched 
+        """
         filenames = glob.glob(os.path.join(self._mainDir, "*.dat"))
         filenames = [os.path.splitext(filename)[0] for filename in filenames]
         filenames = [filename.split("_", 2)[2] for filename in filenames]
@@ -80,6 +99,6 @@ class DistCollector:
         return dis_types
 
 if __name__ == "__main__":
-    mainDir = "C:\Projects\Git\Python-In-The-Lab_Project\Hyst"
+    mainDir = "/home/gf/src/Python/Python-in-the-lab/Bk"
     dcoll = DistCollector(mainDir)
     dcoll.plot("S")
