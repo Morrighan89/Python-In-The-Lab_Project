@@ -39,10 +39,10 @@ class DistCollector:
     maxLex: int, opt
         max lenght of string describing the file types to consider
         such in F64ac_freq_filetype.dat
-    material: string, opt
-        the material used in the experiment
+    structure: string, opt
+        the structure used in the experiment (dot,pillar,thorus)
     """
-    def __init__(self, mainDir, maxLen=1, material="F64ac"):  
+    def __init__(self, mainDir, maxLen=1, structure="dot"):  
         self._mainDir = mainDir
         # Check if the dist_type exists
         # How can we do it?
@@ -50,7 +50,7 @@ class DistCollector:
         print(self.dis_types)
         self.distrs = dict()
         for dis_type in self.dis_types:
-            pattern = "%s_????_%s.dat" % (material, dis_type)
+            pattern = "%s_????_%s.dat" % (structure, dis_type)
             pattern = os.path.join(self._mainDir, pattern)
             filenames = sorted(glob.glob(pattern))
             print(filenames)
@@ -60,7 +60,7 @@ class DistCollector:
                 freq = fname.split("_")[1]
                 self.distrs[dis_type][freq] = Dist(fname)
 
-    def plot(self, dis_type, loglog=True):
+    def plot(self, dis_type, loglog=False):
         """
         plot all the distributions
         just giving the type ('S', 'T', 'E', etc)
@@ -85,7 +85,7 @@ class DistCollector:
         """
         find the type of distributions (denoted by 'S', 'T', etc)
         looking at the last character of the filenames 
-        as in F64ac_0.02_S.dat
+        as in dot_Hyst_100_00_s20.dat
         Parameters:
         ===========
             maxLen: int, opt
@@ -98,7 +98,40 @@ class DistCollector:
         dis_types = set(dis_types)
         return dis_types
 
+    def _get_diameters(self, maxLen=3):
+        """
+        find the diameter or maxdimension of the objecr (denoted by dimension in nanometers)
+        looking at the last character of the filenames 
+        as in dot_Hyst_100_00_s20.dat
+        Parameters:
+        ===========
+            maxLen: int, opt
+            max length of the string to be searched 
+        """
+        filenames = glob.glob(os.path.join(self._mainDir, "*.dat"))
+        filenames = [os.path.splitext(filename)[0] for filename in filenames]
+        filenames = [filename.split("_", 2)[2] for filename in filenames]
+        diameters = [filename for filename in filenames if len(filename) <= maxLen]
+        diameters = set(diameters)
+        return diameters
+    def _get_qty(self, maxLen=4):
+        """
+        find the quantity stored (Hyst for Hysteresis loop, Ener for the energy)
+        looking at the last character of the filenames 
+        as in dot_Hyst_100_00_s20.dat
+        Parameters:
+        ===========
+            maxLen: int, opt
+            max length of the string to be searched 
+        """
+        filenames = glob.glob(os.path.join(self._mainDir, "*.dat"))
+        filenames = [os.path.splitext(filename)[0] for filename in filenames]
+        filenames = [filename.split("_", 2)[2] for filename in filenames]
+        qty = [filename for filename in filenames if len(filename) <= maxLen]
+        qty = set(qty)
+        return qty
+
 if __name__ == "__main__":
-    mainDir = "/home/gf/src/Python/Python-in-the-lab/Bk"
+    mainDir = "C:\Projects\Git\Python-In-The-Lab_Project\Hyst"
     dcoll = DistCollector(mainDir)
     dcoll.plot("S")
