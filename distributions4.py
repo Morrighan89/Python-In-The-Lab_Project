@@ -48,7 +48,9 @@ class DistCollector:
         # How can we do it?
         self.dis_types = self._get_distribution_types(maxLen)
         self.diameters = self._get_diameters(maxLen)
+        self.thicknesses= self._get_thicknesses(maxLen)
         print(self.dis_types)
+        print(self.thicknesses)
         self.distrs = dict()
         for dis_type in self.dis_types:
             self.distrs[dis_type] = dict()
@@ -62,8 +64,7 @@ class DistCollector:
                     fname = os.path.join(self._mainDir, filename)
                     thick = self._get_thickness(fname)
                     self.distrs[dis_type][diameter][thick] = Dist(fname)
-                    print(self.distrs[dis_type])
-    def plot(self, dis_type, loglog=False):
+    def plot(self, dis_type,diameter="*",thickness="*", loglog=False):
         """
         plot all the distributions
         just giving the type ('S', 'T', 'E', etc)
@@ -71,16 +72,24 @@ class DistCollector:
         if dis_type not in self.dis_types:
             print("Type %s does not exist, please check it" % dis_type)
             return
+        if diameter != "*" and (diameter not in self.diameters):
+            print("Diameter %s does not exist, please check it" % diameter)
+            return
+        #if thickness != "*" and (thickness not in self.thicknesses):
+        #    print("thickness %s does not exist, please check it" % thickness)
+        #    return
         fig = plt.figure()
         ax = fig.add_subplot(111)
         for diam in sorted(self.distrs[dis_type]):
-            for thick in sorted(self.distrs[dis_type][diam]):
-                d = self.distrs[dis_type][diam][thick]
-                lb = " d= %s nm, t= %s nm" % (diam,thick)
-                if loglog:
-                    ax.loglog(d.x, d.y, 'o', label=lb)
-                else:
-                    ax.plot(d.x, d.y, label=lb)
+            if (diam==diameter and diameter!="*") or diameter=="*":
+                for thick in sorted(self.distrs[dis_type][diam]):
+                    if (thick==thickness and thickness!="*") or thickness=="*":
+                        d = self.distrs[dis_type][diam][thick]
+                        lb = " d= %s nm, t= %s nm" % (diam,thick)
+                        if loglog:
+                            ax.loglog(d.x, d.y, 'o', label=lb)
+                        else:
+                            ax.plot(d.x, d.y, label=lb)
         ax.legend(numpoints=1)
         ax.grid(True)
         # Here we need to explicity say to show the plot
@@ -122,6 +131,24 @@ class DistCollector:
         diameters = [filename for filename in filenames if len(filename) <= maxLen]
         diameters = set(diameters)
         return diameters
+    def _get_thicknesses(self, maxLen=3):
+        """
+        find the diameter or maxdimension of the objecr (denoted by dimension in nanometers)
+        looking at the last character of the filenames 
+        as in dot_Hyst_100_00_s20.dat
+        Parameters:
+        ===========
+            maxLen: int, opt
+            max length of the string to be searched 
+        """
+        filenames = glob.glob(os.path.join(self._mainDir, "*.dat"))
+        filenames = [os.path.splitext(filename)[0] for filename in filenames]
+        filenames = [os.path.split(filename)[1] for filename in filenames]
+        print('\n'.join(filenames))
+        filenames = [filename.split("_s",1)[1] for filename in filenames]
+        thicknesses = [filename for filename in filenames if len(filename) <= maxLen]
+        thicknesses = set(thicknesses)
+        return thicknesses
     def _get_diameter(self,filename,maxLen=3):
         """
         find the diameter or maxdimension of the objecr (denoted by dimension in nanometers)
@@ -152,13 +179,13 @@ class DistCollector:
         """
         filename = os.path.splitext(filename)[0] 
         filename = os.path.split(filename)[1] 
-        filename = filename.split("_")[-1] 
+        filename = filename.split("_s")[-1] 
         thickness = filename 
         return thickness
 
 if __name__ == "__main__":
     mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
     dcoll = DistCollector(mainDir)
-    dcoll.plot("Hyst")
+    dcoll.plot("Hyst",thickness="30")
 
 
