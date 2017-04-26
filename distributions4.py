@@ -1,5 +1,6 @@
 import glob, os, sys
 import numpy as np
+import scipy.integrate as integrate
 import matplotlib.pylab as plt
 
 class Dist:
@@ -183,9 +184,39 @@ class DistCollector:
         thickness = filename 
         return thickness
 
+class integral:
+    """
+    This class load the data given a filename and integrates the curve
+    """
+    def __init__(self, filename, mainDir, is_avoid_zeros=True):
+        # It is better to make general x,y arrays
+        self._mainDir = mainDir
+        fname = os.path.join(self._mainDir, filename)
+        self.x, self.y = np.loadtxt(fname , comments="#", unpack=True)
+        if is_avoid_zeros:
+            s_len = len(self.x)
+            self.x, self.y = self.avoid_zeros()
+            print("%i lines deleted" % (s_len - len(self.x)))
+        self.fullHyst=self.x[-1]+self.x[1]
+    
+    def avoid_zeros(self):
+        is_not_zero = self.y != 0
+        x = self.x[is_not_zero]
+        y = self.y[is_not_zero]
+        return x, y
+
+    def integrate(self):
+        if self.fullHyst==0:
+           self.result=integrate.trapz(self.y,self.x)
+           print("PLUTO")
+        else:
+           self.result=integrate.trapz(self.y,self.x)
+           print(self.result,self.fullHyst,self.x[-1],self.x[1])
+
 if __name__ == "__main__":
     mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
     dcoll = DistCollector(mainDir)
     dcoll.plot("Hyst",thickness="30")
-
+    integ=integral("dot_Hyst_100_00_s20.dat",mainDir)
+    integ.integrate()
 
