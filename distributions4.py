@@ -208,10 +208,10 @@ class integral:
     def integrate(self):
         if self.fullHyst==0:
            self.result=integrate.trapz(self.y,self.x)
-           print(self.result,self.fullHyst,self.x[-1],self.x[1])
+           print(self.result,self.fullHyst,self.x[-1],self.x[0])
         else:
            self.result=integrate.trapz(self.y,self.x)
-           print(self.result,self.fullHyst,self.x[-1],self.x[1])
+           print(self.result,self.fullHyst,self.x[-1],self.x[0])
 
 if __name__ == "__main__":
     mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
