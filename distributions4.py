@@ -197,7 +197,7 @@ class integral:
             s_len = len(self.x)
             self.x, self.y = self.avoid_zeros()
             print("%i lines deleted" % (s_len - len(self.x)))
-        self.fullHyst=self.x[-1]+self.x[0]
+        self.fullHyst=self.x[-1]-self.x[0]
     
     def avoid_zeros(self):
         is_not_zero = self.y != 0
