@@ -197,7 +197,7 @@ class integral:
             s_len = len(self.x)
             self.x, self.y = self.avoid_zeros()
             print("%i lines deleted" % (s_len - len(self.x)))
-        self.fullHyst=self.x[-1]+self.x[1]
+        self.fullHyst=self.x[-1]+self.x[0]
     
     def avoid_zeros(self):
         is_not_zero = self.y != 0
@@ -208,7 +208,7 @@ class integral:
     def integrate(self):
         if self.fullHyst==0:
            self.result=integrate.trapz(self.y,self.x)
-           print("PLUTO")
+           print(self.result,self.fullHyst,self.x[-1],self.x[1])
         else:
            self.result=integrate.trapz(self.y,self.x)
            print(self.result,self.fullHyst,self.x[-1],self.x[1])
