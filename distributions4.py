@@ -198,26 +198,35 @@ class integral:
             self.x, self.y = self.avoid_zeros()
             print("%i lines deleted" % (s_len - len(self.x)))
         self.fullHyst=self.x[-1]-self.x[0]
-    
+        self.energy=4*np.pi*1.e-7*self.result
+
     def avoid_zeros(self):
         is_not_zero = self.y != 0
         x = self.x[is_not_zero]
         y = self.y[is_not_zero]
         return x, y
 
-    def integrate(self):
+    def integra(self):
         if self.fullHyst==0:
-           self.result=integrate.trapz(self.y,self.x)
-           print(self.result,self.fullHyst,self.x[-1],self.x[0])
+           self._branchup=integrate.trapz(self.y[0:self.x.size/4],self.x[0:self.x.size/4])
+           self._branchdown=integrate.trapz(self.y[self.x.size/4:self.x.size/2],self.x[self.x.size/4:self.x.size/2])
+           self.result=-self._branchdown-self._branchup
+           print(self.result,self._branchup,self._branchdown,self.fullHyst,self.x[-1],self.x[0])
+           print(self.x)
         else:
-           self.result=integrate.trapz(self.y,self.x)
-           print(self.result,self.fullHyst,self.x[-1],self.x[0])
+           self._branchup=integrate.trapz(self.y[0:self.x.size/2],self.x[0:self.x.size/2])
+           self._branchdown=integrate.trapz(self.y[self.x.size/2:self.x.size],self.x[self.x.size/2:self.x.size])
+           self.result=-self._branchdown-self._branchup
+           print(self.result,self._branchup,self._branchdown,self.fullHyst,self.x[-1],self.x[0])
+           print(self.x)
 
 if __name__ == "__main__":
     #mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
     mainDir = "D:\\git\\Python-In-The-Lab_Project\\Python-In-The-Lab_Project\\Hyst"
-    dcoll = DistCollector(mainDir)
-    dcoll.plot("Hyst",thickness="30")
+
+    #dcoll = DistCollector(mainDir)
+    #dcoll.plot("Hyst",thickness="30")
     integ=integral("dot_Hyst_100_00_s20.dat",mainDir)
-    integ.integrate()
+    integ.integra()
+    print(integ.energy)
 
