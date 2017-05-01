@@ -214,7 +214,8 @@ class integral:
            print(self.result,self.fullHyst,self.x[-1],self.x[0])
 
 if __name__ == "__main__":
-    mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
+    #mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
+    mainDir = "D:\\git\\Python-In-The-Lab_Project\\Python-In-The-Lab_Project\\Hyst"
     dcoll = DistCollector(mainDir)
     dcoll.plot("Hyst",thickness="30")
     integ=integral("dot_Hyst_100_00_s20.dat",mainDir)
