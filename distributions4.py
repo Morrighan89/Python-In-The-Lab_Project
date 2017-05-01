@@ -98,7 +98,7 @@ class DistCollector:
 
     def _get_distribution_types(self, maxLen=4):
         """
-        find the type of distributions (denoted by 'S', 'T', etc)
+        find the type of distributions 
         looking at the last character of the filenames 
         as in dot_Hyst_100_00_s20.dat
         Parameters:
@@ -221,6 +221,23 @@ class integral:
            print(self.result,self._branchup,self._branchdown,self.fullHyst,self.x[-1],self.x[0])
            print(self.x)
         return self.result
+
+class mapsHystEnergy:
+    """
+    this is class to collect all the filenames 
+    in a dictionary of instances and plot the desired map givien the parameters
+    Parameters:
+    ===========
+    mainDir: str
+        Directory containing the files
+    maxLex: int, opt
+        max lenght of string describing the file types to consider
+        such in F64ac_freq_filetype.dat
+    structure: string, opt
+        the structure used in the experiment (dot,pillar,thorus)
+    """
+    def pluto(self)
+
 
 if __name__ == "__main__":
     #mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
