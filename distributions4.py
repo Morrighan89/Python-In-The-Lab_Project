@@ -198,7 +198,8 @@ class integral:
             self.x, self.y = self.avoid_zeros()
             print("%i lines deleted" % (s_len - len(self.x)))
         self.fullHyst=self.x[-1]-self.x[0]
-        self.energy=4*np.pi*1.e-7*self.result
+        value=self.integra()
+        self.energy=2*4*np.pi*1.e-7*value
 
     def avoid_zeros(self):
         is_not_zero = self.y != 0
@@ -208,17 +209,18 @@ class integral:
 
     def integra(self):
         if self.fullHyst==0:
-           self._branchup=integrate.trapz(self.y[0:self.x.size/4],self.x[0:self.x.size/4])
-           self._branchdown=integrate.trapz(self.y[self.x.size/4:self.x.size/2],self.x[self.x.size/4:self.x.size/2])
+           self._branchup=integrate.simps(self.y[0:self.x.size/4],self.x[0:self.x.size/4])
+           self._branchdown=integrate.simps(self.y[self.x.size/4:self.x.size/2],self.x[self.x.size/4:self.x.size/2])
            self.result=-self._branchdown-self._branchup
            print(self.result,self._branchup,self._branchdown,self.fullHyst,self.x[-1],self.x[0])
            print(self.x)
         else:
-           self._branchup=integrate.trapz(self.y[0:self.x.size/2],self.x[0:self.x.size/2])
-           self._branchdown=integrate.trapz(self.y[self.x.size/2:self.x.size],self.x[self.x.size/2:self.x.size])
+           self._branchup=integrate.simps(self.y[0:self.x.size/2],self.x[0:self.x.size/2])
+           self._branchdown=integrate.simps(self.y[self.x.size/2:self.x.size],self.x[self.x.size/2:self.x.size])
            self.result=-self._branchdown-self._branchup
            print(self.result,self._branchup,self._branchdown,self.fullHyst,self.x[-1],self.x[0])
            print(self.x)
+        return self.result
 
 if __name__ == "__main__":
     #mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
@@ -226,7 +228,7 @@ if __name__ == "__main__":
 
     #dcoll = DistCollector(mainDir)
     #dcoll.plot("Hyst",thickness="30")
-    integ=integral("dot_Hyst_100_00_s20.dat",mainDir)
+    integ=integral("dot_Hyst_650_00_s30.dat",mainDir)
     integ.integra()
     print(integ.energy)
 
