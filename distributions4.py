@@ -208,22 +208,18 @@ class integral:
         return x, y
 
     def integra(self):
+        
         if self.fullHyst==0:
            middle=int(np.round(self.x.size/4))
            top=int(np.round(self.x.size/2))
-           print(self.x.size, self.x[middle:top])
            self._branchup=integrate.simps(self.y[0:middle],self.x[0:middle])
-           self._branchdown=integrate.simps(self.y[middle:self.x.size/2],self.x[middle:self.x.size/2])
+           self._branchdown=integrate.simps(self.y[middle:top],self.x[middle:top])
            self.result=-self._branchdown-self._branchup
-           print(self.result,self._branchup,self._branchdown,self.fullHyst,self.x[-1],self.x[0])
-           print(self.x)
         else:
            middle=int(np.round(self.x.size/2))
            self._branchup=integrate.simps(self.y[0: middle],self.x[0: middle])
            self._branchdown=integrate.simps(self.y[middle:self.x.size],self.x[middle:self.x.size])
            self.result=-self._branchdown-self._branchup
-           print(self.result,self._branchup,self._branchdown,self.fullHyst,self.x[-1],self.x[0])
-           print(self.x)
         return self.result
 
 class mapsHystEnergy:
@@ -236,21 +232,43 @@ class mapsHystEnergy:
         Directory containing the files
     maxLex: int, opt
         max lenght of string describing the file types to consider
-        such in F64ac_freq_filetype.dat
+        such in dot_Hyst_500_00_s30.dat
     structure: string, opt
         the structure used in the experiment (dot,pillar,thorus)
     """
-    def pluto(self):
-        ciuffi
+    def __init__(self, mainDir,structure="dot"):
+        self.dist=DistCollector(mainDir)
+    def integra(self,x,y):
+        self.fullHyst=x[-1]-x[0]
+        if self.fullHyst==0:
+           middle=int(np.round(x.size/4))
+           top=int(np.round(x.size/2))
+           self._branchup=integrate.simps(y[0:middle],x[0:middle])
+           self._branchdown=integrate.simps(y[middle:top],x[middle:top])
+           self.result=-self._branchdown-self._branchup
+        else:
+           middle=int(np.round(x.size/2))
+           self._branchup=integrate.simps(y[0: middle],x[0: middle])
+           self._branchdown=integrate.simps(y[middle:x.size],x[middle:x.size])
+           self.result=-self._branchdown-self._branchup
+        return self.result
 
-
+    def setData(self,outName="mapdata",structure="dot",dis_type="Hyst"):
+            for diam in sorted(self.dist.distrs[dis_type]):
+                for thick in sorted(self.dist.distrs[dis_type][diam]):
+                    value=self.integra(self.dist.distrs[dis_type][diam][thick].x,self.dist.distrs[dis_type][diam][thick].y)
+                    self.energy=2*4*np.pi*1.e-7*value
+                    print(self.energy,diam,thick)
 if __name__ == "__main__":
     mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
     #mainDir = "D:\\git\\Python-In-The-Lab_Project\\Python-In-The-Lab_Project\\Hyst"
 
+
     dcoll = DistCollector(mainDir)
     dcoll.plot("Hyst",thickness="30")
     integ=integral("dot_Hyst_500_00_s30.dat",mainDir)
-    
-    print(integ.energy)
+    maps=mapsHystEnergy(mainDir)
+    maps.setData()
+    #print(dcoll.distrs["Hyst"]["300"]["30"].x)
+    #print(integ.energy)
 
