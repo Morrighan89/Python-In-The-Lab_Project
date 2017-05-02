@@ -240,7 +240,6 @@ class mapsHystEnergy:
         self.dist=DistCollector(mainDir)
     def integra(self,x,y):
         self.fullHyst=x[-1]-x[0]
-        print(self.fullHyst)
         if self.fullHyst==0:
            middle=int(np.round(x.size/4))
            top=int(np.round(x.size/2))
@@ -249,7 +248,6 @@ class mapsHystEnergy:
            self.result=-self._branchdown-self._branchup
         else:
            middle=int(np.round(x.size/2))
-           print(middle)
            self._branchup=integrate.simps(y[0: middle],x[0: middle])
            self._branchdown=integrate.simps(y[middle:x.size],x[middle:x.size])
            self.result=-self._branchdown-self._branchup
