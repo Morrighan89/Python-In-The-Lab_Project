@@ -209,14 +209,18 @@ class integral:
 
     def integra(self):
         if self.fullHyst==0:
-           self._branchup=integrate.simps(self.y[0:self.x.size/4],self.x[0:self.x.size/4])
-           self._branchdown=integrate.simps(self.y[self.x.size/4:self.x.size/2],self.x[self.x.size/4:self.x.size/2])
+           middle=int(np.round(self.x.size/4))
+           top=int(np.round(self.x.size/2))
+           print(self.x.size, self.x[middle:top])
+           self._branchup=integrate.simps(self.y[0:middle],self.x[0:middle])
+           self._branchdown=integrate.simps(self.y[middle:self.x.size/2],self.x[middle:self.x.size/2])
            self.result=-self._branchdown-self._branchup
            print(self.result,self._branchup,self._branchdown,self.fullHyst,self.x[-1],self.x[0])
            print(self.x)
         else:
-           self._branchup=integrate.simps(self.y[0:self.x.size/2],self.x[0:self.x.size/2])
-           self._branchdown=integrate.simps(self.y[self.x.size/2:self.x.size],self.x[self.x.size/2:self.x.size])
+           middle=int(np.round(self.x.size/2))
+           self._branchup=integrate.simps(self.y[0: middle],self.x[0: middle])
+           self._branchdown=integrate.simps(self.y[middle:self.x.size],self.x[middle:self.x.size])
            self.result=-self._branchdown-self._branchup
            print(self.result,self._branchup,self._branchdown,self.fullHyst,self.x[-1],self.x[0])
            print(self.x)
@@ -236,16 +240,17 @@ class mapsHystEnergy:
     structure: string, opt
         the structure used in the experiment (dot,pillar,thorus)
     """
-    def pluto(self)
+    def pluto(self):
+        ciuffi
 
 
 if __name__ == "__main__":
-    #mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
-    mainDir = "D:\\git\\Python-In-The-Lab_Project\\Python-In-The-Lab_Project\\Hyst"
+    mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
+    #mainDir = "D:\\git\\Python-In-The-Lab_Project\\Python-In-The-Lab_Project\\Hyst"
 
-    #dcoll = DistCollector(mainDir)
-    #dcoll.plot("Hyst",thickness="30")
-    integ=integral("dot_Hyst_650_00_s30.dat",mainDir)
-    integ.integra()
+    dcoll = DistCollector(mainDir)
+    dcoll.plot("Hyst",thickness="30")
+    integ=integral("dot_Hyst_500_00_s30.dat",mainDir)
+    
     print(integ.energy)
 
