@@ -1,7 +1,9 @@
 import glob, os, sys
 import numpy as np
 import scipy.integrate as integrate
+import scipy.ndimage
 import matplotlib.pylab as plt
+from scipy.interpolate import griddata
 
 class Dist:
     """
@@ -253,22 +255,59 @@ class mapsHystEnergy:
            self.result=-self._branchdown-self._branchup
         return self.result
 
-    def setData(self,outName="mapdata",structure="dot",dis_type="Hyst"):
-            for diam in sorted(self.dist.distrs[dis_type]):
-                for thick in sorted(self.dist.distrs[dis_type][diam]):
-                    value=self.integra(self.dist.distrs[dis_type][diam][thick].x,self.dist.distrs[dis_type][diam][thick].y)
-                    self.energy=2*4*np.pi*1.e-7*value
-                    print(self.energy,diam,thick)
+    def setData(self,outName="mapdata",structure="dot",dis_type="Hyst"): 
+        points=np.array([])    
+        values = np.array([])
+        mappatxt = np.array([])
+        for diam in sorted(self.dist.distrs[dis_type]):
+            for thick in sorted(self.dist.distrs[dis_type][diam]):
+                points=np.append(points,(int(diam),int(thick)))
+                value=self.integra(self.dist.distrs[dis_type][diam][thick].x,self.dist.distrs[dis_type][diam][thick].y)
+                self.energy=2*4*np.pi*1.e-7*value
+                values=np.append(values,self.energy)
+                print(self.energy,diam,thick)
+                mappatxt=np.append(mappatxt,(int(diam),int(thick),self.energy))
+        mappatxt=np.reshape(mappatxt,(-1,3))
+        points=np.reshape(points,(-1,2))
+        values=np.reshape(values,(-1,1))
+        np.savetxt(outName,mappatxt[:],"%4d  %4d %12.8e")
+        return (points,values)
+
+    def plotMap(self):
+        points,values=self.setData()
+        #xmin=np.min(points[:,0])
+        #xmax=np.max(points[:,0])
+        #ymin=np.min(points[:,1])
+        #ymax=np.max(points[:,1])
+        
+        grid_x, grid_y = np.mgrid[np.min(points[:,0]):np.max(points[:,0]):100j, np.min(points[:,1]):np.max(points[:,1]):100j]
+        #print(grid_x, grid_y)
+        
+        grid_z0 = griddata((points[:,0],points[:,1]), values, (grid_x, grid_y), method='cubic',fill_value=np.min(values)/2)
+        print(np.min(values)/2)
+        #
+        origin = 'lower'
+        CS=plt.contourf(grid_x,grid_y,grid_z0[:,:,0],100)
+        plt.rcParams['contour.negative_linestyle'] = 'solid'
+        CS2 = plt.contour(CS, levels=CS.levels[::10],
+                          colors='k',
+                          origin=origin,
+                          hold='on')
+        plt.clabel(CS2, fontsize=9, inline=1)
+        #plt.axis([200, 650, 10, 30])
+        plt.colorbar(CS)
+        plt.show()
+
 if __name__ == "__main__":
     mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
     #mainDir = "D:\\git\\Python-In-The-Lab_Project\\Python-In-The-Lab_Project\\Hyst"
 
 
-    dcoll = DistCollector(mainDir)
-    dcoll.plot("Hyst",thickness="30")
+    #dcoll = DistCollector(mainDir)
+    #dcoll.plot("Hyst",thickness="30")
     integ=integral("dot_Hyst_500_00_s30.dat",mainDir)
     maps=mapsHystEnergy(mainDir)
-    maps.setData()
+    maps.plotMap()
     #print(dcoll.distrs["Hyst"]["300"]["30"].x)
     #print(integ.energy)
 
