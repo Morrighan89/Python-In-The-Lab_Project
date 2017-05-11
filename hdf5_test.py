@@ -15,14 +15,16 @@ dataset_Hext   = '/Hext0/Val'
 dataset_numTimeSteps ='/Timesteps/TimeSteps#'
 event_number   = 5
 
-versore=np.array([[1],[0],[0]])
+versore=np.array([[np.sqrt(3)/2],[1/2],[0]])
 versoreT=np.reshape(versore,(1,3))
 file    = h5py.File(hdf5_file_name, 'r')   # 'r' means that hdf5 file is open in read-only mode
 
 datasetTime=file[dataset_numTimeSteps]
 numTimeSteps= datasetTime[(0)]
 print(numTimeSteps)
-media= np.array([])
+mediau= np.array([])
+mediav= np.array([])
+mediaw= np.array([])
 Hexternal=np.array([])
 outputdata=np.array([])
 for i in range(1,numTimeSteps):
@@ -40,18 +42,30 @@ for i in range(1,numTimeSteps):
     Hext= datasetH[(0)]
     
     np.savetxt("uffa",proiez)
-    media=np.append(media,np.average(proiez[:,0]))
+    mediau=np.append(mediau,np.average(proiez[:,0]))
+    mediav=np.append(mediav,np.average(proiez[:,1]))
+    mediaw=np.append(mediaw,np.average(proiez[:,2]))
     Hexternal=np.append(Hexternal,Hext[0])
-    outputdata=np.append(outputdata,(Hexternal[i-1],media[i-1]))
+    outputdata=np.append(outputdata,(Hexternal[i-1],mediau[i-1],mediav[i-1],mediaw[i-1]))
     
     #endforloop
 print(np.shape(outputdata))
-outputdata=np.reshape(outputdata,(-1,2))
+outputdata=np.reshape(outputdata,(-1,4))
 np.savetxt(outputfile, outputdata)
 #print("\n", media, "media shape \n")
 file.close()
 #print(Hexternal)
-plt.plot(Hexternal, media)
+fig = plt.figure()
+ax = fig.add_subplot(111)
+lb = "u"
+ax.plot(Hexternal, mediau,label=lb)
+lb = "v"
+ax.plot(Hexternal, mediav,label=lb)
+lb = "w"
+ax.plot(Hexternal, mediaw,label=lb)
+ax.legend(numpoints=1)
+ax.grid(True)
+#plt.plot(Hexternal, mediau)
 plt.show()
 #
 # print ('arr1ev.shape =', arr1ev.shape)
