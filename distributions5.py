@@ -64,7 +64,7 @@ class DistCollector:
         for dis_type in self.dis_types:
             self.distrs[dis_type] = dict()
             for diameter in self.diameters:
-               pattern = "%s_%s_%s_00_s*.dat" % (structure, dis_type,diameter)
+               pattern = "%s_%s_%s_t*_*.dat" % (structure, dis_type,diameter)
                pattern = os.path.join(self._mainDir, pattern)
                filenames = sorted(glob.glob(pattern))
                print('\n'.join(filenames))
@@ -73,11 +73,11 @@ class DistCollector:
                     fname = os.path.join(self._mainDir, filename)
                     thick = self._get_thickness(fname)
                     self.distrs[dis_type][diameter][thick] = Dist(fname)
-                    
+
     def plot(self, dis_type,diameter="*",thickness="*", loglog=False):
         """
-        plot all the distributions with the possibility to restrict to a specific diameter or thickness or type
-        
+        plot all the distributions
+        just giving the type ('S', 'T', 'E', etc)
         """
         if dis_type not in self.dis_types:
             print("Type %s does not exist, please check it" % dis_type)
@@ -156,8 +156,8 @@ class DistCollector:
         return diameters
     def _get_thicknesses(self, maxLen=4):
         """
-        find the thickness of a collection of object in the given directory,
-        reading the 5th position in the file names and returns all the availble thicknesses
+        find the diameter or maxdimension of the objecr (denoted by dimension in nanometers)
+        looking at the last character of the filenames 
         as in dot_Hyst_100_00_s20.dat
         Parameters:
         ===========
@@ -167,18 +167,18 @@ class DistCollector:
         filenames = glob.glob(os.path.join(self._mainDir, "*.dat"))
         filenames = [os.path.splitext(filename)[0] for filename in filenames]
         filenames = [os.path.split(filename)[1] for filename in filenames]
-        print('\n'.join(filenames))
-        filenames = [filename.split("_s",1)[1] for filename in filenames]
+        filenames = [filename.split("_t",1)[1] for filename in filenames]
+        filenames = [filename.split("_",1)[0] for filename in filenames]
         for filename in filenames:
-               if "v" in filename:
-                  filename = ['%s.%s' %(filename.split("v",1)[0],filename.split("v",1)[1])]
+           if "v" in filename:
+              filename = ['%s.%s' %(filename.split("v",1)[0],filename.split("v",1)[1])]
         thicknesses = [filename for filename in filenames if len(filename) <= maxLen]
         thicknesses = set(thicknesses)
         return thicknesses
     def _get_diameter(self,filename,maxLen=3):
         """
-        find the diameter or maxdimension of the object (denoted by dimension in nanometers)
-        looking at the third position in the file name
+        find the diameter or maxdimension of the objecr (denoted by dimension in nanometers)
+        looking at the last character of the filenames 
         as in dot_Hyst_100_00_s20.dat
         Parameters:
         ===========
@@ -203,14 +203,16 @@ class DistCollector:
             maxLen: int, opt
             max length of the string to be searched 
         """
-        filename = os.path.splitext(filename)[0] 
+        ffilename = os.path.splitext(filename)[0] 
         filename = os.path.split(filename)[1] 
-        filename = filename.split("_s")[-1]
+        filename = filename.split("_t")[-1] 
+        filename = filename.split("_")[0]
         if "v" in filename:
               part1=filename.split("v",1)[0]
               part2=filename.split("v",1)[1]
-              filename = ''.join((filename.split("v",1)[0],'.',filename.split("v",1)[1]))
-        thickness = filename 
+              filename = ''.join((filename.split("v",1)[0],'.',filename.split("v",1)[1]))#['%s.%s' %(filename.split("v",1)[0],filename.split("v",1)[1])]
+        print(filename)
+        thickness = filename
         return thickness
 
 class integral:
@@ -253,25 +255,17 @@ class integral:
 
 class mapsHystEnergy:
     """
-    this is class to cuses the Dist Collector class to read and analyze the file in the given folder
-    Integrates the different hysteresys loops and generates a color map of the specific energy (J/m^3) due to hysteresis losses
-    On the x axes we have the length of the diameter or major axe of the magnetic nanostructure (nm)
-    On the y axes we have the thickness of the magnetic nanostructure
+    this is class to collect all the filenames 
+    in a dictionary of instances and plot the desired map givien the parameters
     Parameters:
     ===========
     mainDir: str
         Directory containing the files
+    maxLex: int, opt
+        max lenght of string describing the file types to consider
+        such in dot_Hyst_500_00_s30.dat
     structure: string, opt
-        the structure used in the experiment (dot,pillar,thorus,rings)
-    ===========
-    integra:
-        given the x,y arrays evaluates the area of the Hysteresis loop
-    setData:
-        uses the data read from the dist collector routine and the dictionary
-        and calling the function integra generates the data for the color map
-        and saves them on a file "mapdata"
-    plotmap:
-        interpolates the data generated by setData and plots a nice and smooth "heatmap"
+        the structure used in the experiment (dot,pillar,thorus)
     """
     def __init__(self, mainDir,structure="dot"):
         self.dist=DistCollector(mainDir)
@@ -290,7 +284,7 @@ class mapsHystEnergy:
            self.result=(-self._branchdown+self._branchup)/2
         return self.result
 
-    def setData(self,outName="mapdata",structure="dot",dis_type="Hyst"): 
+    def setData(self,outName="mapdata",structure="dot",dis_type="Hy"): 
         points=np.array([])    
         values = np.array([])
         mappatxt = np.array([])
@@ -318,7 +312,7 @@ class mapsHystEnergy:
         grid_x, grid_y = np.mgrid[np.min(points[:,0]):np.max(points[:,0]):100j, np.min(points[:,1]):np.max(points[:,1]):100j]
         #print(grid_x, grid_y)
         
-        grid_z0 = griddata((points[:,0],points[:,1]), values, (grid_x, grid_y), method='cubic',fill_value=np.min(values)/2)
+        grid_z0 = griddata((points[:,0],points[:,1]), values, (grid_x, grid_y), method='linear',fill_value=0)
         print(np.min(values)/2)
         #
         origin = 'lower'
@@ -334,18 +328,25 @@ class mapsHystEnergy:
         plt.show()
 
 if __name__ == "__main__":
-    mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
+    mainDir = "W:\\Micro\\Riccardo\\Dot\\Single\\Results\\Hyst_new\\Bis"
     #mainDir = "D:\\git\\Python-In-The-Lab_Project\\Python-In-The-Lab_Project\\Hyst"
 
 
     dcoll = DistCollector(mainDir)
-    dcoll.plot("Hyst",thickness="20")
-    integ=integral("dot_Hyst_500_00_s30.dat",mainDir)
-    
+    dcoll.plot("Hy", diameter="300")
+    #integ=integral("dot_Hy_650_t30_bis.dat",mainDir)
+    #print(integ.result)
+    #integ=integral("dot_Hy_650_t25_bis.dat",mainDir)
+    #print(integ.result)
+    #integ=integral("dot_Hy_500_t30_bis.dat",mainDir)
+    #print(integ.result)
+    #integ=integral("dot_Hy_500_t25_bis.dat",mainDir)
+    #print(integ.result)
     maps=mapsHystEnergy(mainDir)
     maps.plotMap()
-    
-  
+    #point,values=maps.setData()
+
     #print(dcoll.distrs["Hyst"]["300"]["30"].x)
     #print(integ.energy)
+
 
