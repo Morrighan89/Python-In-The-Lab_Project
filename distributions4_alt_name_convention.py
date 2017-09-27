@@ -45,7 +45,7 @@ class DistCollector:
         Directory containing the files
     maxLex: int, opt
         max lenght of string describing the file types to consider
-        such in F64ac_freq_filetype.dat
+        such in dot_Hy_300_t20_bis.dat
     structure: string, opt
         the structure used in the experiment (dot,pillar,ring)
     """
