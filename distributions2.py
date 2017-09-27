@@ -1,7 +1,7 @@
 import glob, os, sys
 import numpy as np
 import matplotlib.pylab as plt
-import scipy as sci
+
 
 class Dist:
     """
