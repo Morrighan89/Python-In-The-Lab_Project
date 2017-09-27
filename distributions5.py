@@ -47,7 +47,7 @@ class DistCollector:
         max lenght of string describing the file types to consider
         such in F64ac_freq_filetype.dat
     structure: string, opt
-        the structure used in the experiment (dot,pillar,thorus)
+        the structure used in the experiment (dot,pillar,ring)
     """
     def __init__(self, mainDir, maxLen=4, structure="dot"):  
         self._mainDir = mainDir
