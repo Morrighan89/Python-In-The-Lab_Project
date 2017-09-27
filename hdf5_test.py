@@ -55,7 +55,7 @@ for i in range(1,numTimeSteps):
     #endforloop
 print(np.shape(outputdata) , "np.shape outputdata")
 outputdata=np.reshape(outputdata,(-1,4))
-np.savetxt(outputfile, outputdata)
+np.savetxt(outputfile, outputdata,, fmt='%26.18e')
 
 file.close()
 #print(Hexternal)

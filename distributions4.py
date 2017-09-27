@@ -49,6 +49,8 @@ class DistCollector:
         self._mainDir = mainDir
         # Check if the dist_type exists
         # How can we do it?
+        self.plotTypes=dict()
+        self.plotTypes= {'Hy': 'Hysteresis Loop','Hyst': 'Hysteresis Loop', 'Ener': 'Energies'}
         self.dis_types = self._get_distribution_types(maxLen)
         self.diameters = self._get_diameters(maxLen)
         self.thicknesses= self._get_thicknesses(maxLen)
@@ -58,7 +60,7 @@ class DistCollector:
         for dis_type in self.dis_types:
             self.distrs[dis_type] = dict()
             for diameter in self.diameters:
-               pattern = "%s_%s_%s_00_s??.dat" % (structure, dis_type,diameter)
+               pattern = "%s_%s_%s_00_s*.dat" % (structure, dis_type,diameter)
                pattern = os.path.join(self._mainDir, pattern)
                filenames = sorted(glob.glob(pattern))
                print('\n'.join(filenames))
@@ -78,22 +80,36 @@ class DistCollector:
         if diameter != "*" and (diameter not in self.diameters):
             print("Diameter %s does not exist, please check it" % diameter)
             return
-        #if thickness != "*" and (thickness not in self.thicknesses):
-        #    print("thickness %s does not exist, please check it" % thickness)
-        #    return
+        if thickness != "*" and (thickness not in self.thicknesses):
+            print("thickness %s does not exist, please check it" % thickness)
+            return
         fig = plt.figure()
         ax = fig.add_subplot(111)
+        ax.set_title('%s' % self.plotTypes[dis_type])
+        if diameter != "*":
+            if thickness != "*":
+                ax.set_title('%s , diameter = %s nm, thickness = %s nm' % (self.plotTypes[dis_type],diameter,thickness))
+            else:
+                ax.set_title('%s , diameter = %s nm' % (self.plotTypes[dis_type],diameter))
+            
+        if (thickness != "*" and diameter == "*"):
+            ax.set_title('%s , thickness = %s nm' % (self.plotTypes[dis_type],thickness))
+
         for diam in sorted(self.distrs[dis_type]):
             if (diam==diameter and diameter!="*") or diameter=="*":
                 for thick in sorted(self.distrs[dis_type][diam]):
                     if (thick==thickness and thickness!="*") or thickness=="*":
                         d = self.distrs[dis_type][diam][thick]
-                        lb = " d= %s nm, t= %s nm" % (diam,thick)
-                        if loglog:
-                            ax.loglog(d.x, d.y, 'o', label=lb)
+                        if thickness=="*" and diameter=="*":
+                            lb = " d= %s nm, t= %s nm" % (diam,thick)
                         else:
-                            ax.plot(d.x, d.y, label=lb)
-        ax.legend(numpoints=1)
+                            if diameter=="*":
+                                lb = "d= %s nm" % (diam)
+                            else:
+                                lb = "t= %s nm" % (thick)
+                        ax.plot(d.x, d.y, label=lb)
+        
+        ax.legend(numpoints=1,loc=4)
         ax.grid(True)
         # Here we need to explicity say to show the plot
         plt.show()
@@ -118,7 +134,7 @@ class DistCollector:
 
     def _get_diameters(self, maxLen=3):
         """
-        find the diameter or maxdimension of the objecr (denoted by dimension in nanometers)
+        find the diameter or maxdimension of the object (denoted by dimension in nanometers)
         looking at the last character of the filenames 
         as in dot_Hyst_100_00_s20.dat
         Parameters:
@@ -134,7 +150,7 @@ class DistCollector:
         diameters = [filename for filename in filenames if len(filename) <= maxLen]
         diameters = set(diameters)
         return diameters
-    def _get_thicknesses(self, maxLen=3):
+    def _get_thicknesses(self, maxLen=4):
         """
         find the diameter or maxdimension of the objecr (denoted by dimension in nanometers)
         looking at the last character of the filenames 
@@ -149,6 +165,9 @@ class DistCollector:
         filenames = [os.path.split(filename)[1] for filename in filenames]
         print('\n'.join(filenames))
         filenames = [filename.split("_s",1)[1] for filename in filenames]
+        for filename in filenames:
+               if "v" in filename:
+                  filename = ['%s.%s' %(filename.split("v",1)[0],filename.split("v",1)[1])]
         thicknesses = [filename for filename in filenames if len(filename) <= maxLen]
         thicknesses = set(thicknesses)
         return thicknesses
@@ -182,7 +201,11 @@ class DistCollector:
         """
         filename = os.path.splitext(filename)[0] 
         filename = os.path.split(filename)[1] 
-        filename = filename.split("_s")[-1] 
+        filename = filename.split("_s")[-1]
+        if "v" in filename:
+              part1=filename.split("v",1)[0]
+              part2=filename.split("v",1)[1]
+              filename = ''.join((filename.split("v",1)[0],'.',filename.split("v",1)[1]))
         thickness = filename 
         return thickness
 
@@ -219,9 +242,9 @@ class integral:
            self.result=-self._branchdown-self._branchup
         else:
            middle=int(np.round(self.x.size/2))
-           self._branchup=integrate.simps(self.y[0: middle],self.x[0: middle])
-           self._branchdown=integrate.simps(self.y[middle:self.x.size],self.x[middle:self.x.size])
-           self.result=-self._branchdown-self._branchup
+           self._branchdown=integrate.simps(self.y,self.x)
+           self._branchup=integrate.simps(-np.flipud(self.y),-np.flipud(self.x))
+           self.result=(-self._branchdown+self._branchup)/2
         return self.result
 
 class mapsHystEnergy:
@@ -250,9 +273,9 @@ class mapsHystEnergy:
            self.result=-self._branchdown-self._branchup
         else:
            middle=int(np.round(x.size/2))
-           self._branchup=integrate.simps(y[0: middle],x[0: middle])
-           self._branchdown=integrate.simps(y[middle:x.size],x[middle:x.size])
-           self.result=-self._branchdown-self._branchup
+           self._branchdown=integrate.simps(y,x)
+           self._branchup=integrate.simps(-np.flipud(y),-np.flipud(x))
+           self.result=(-self._branchdown+self._branchup)/2
         return self.result
 
     def setData(self,outName="mapdata",structure="dot",dis_type="Hyst"): 
@@ -261,16 +284,16 @@ class mapsHystEnergy:
         mappatxt = np.array([])
         for diam in sorted(self.dist.distrs[dis_type]):
             for thick in sorted(self.dist.distrs[dis_type][diam]):
-                points=np.append(points,(int(diam),int(thick)))
+                points=np.append(points,(int(diam),float(thick)))
                 value=self.integra(self.dist.distrs[dis_type][diam][thick].x,self.dist.distrs[dis_type][diam][thick].y)
                 self.energy=2*4*np.pi*1.e-7*value
                 values=np.append(values,self.energy)
                 print(self.energy,diam,thick)
-                mappatxt=np.append(mappatxt,(int(diam),int(thick),self.energy))
+                mappatxt=np.append(mappatxt,(int(diam),float(thick),self.energy))
         mappatxt=np.reshape(mappatxt,(-1,3))
         points=np.reshape(points,(-1,2))
         values=np.reshape(values,(-1,1))
-        np.savetxt(outName,mappatxt[:],"%4d  %4d %12.8e")
+        np.savetxt(outName,mappatxt[:],"%4d  %4.2f %12.8e")
         return (points,values)
 
     def plotMap(self):
@@ -303,11 +326,14 @@ if __name__ == "__main__":
     #mainDir = "D:\\git\\Python-In-The-Lab_Project\\Python-In-The-Lab_Project\\Hyst"
 
 
-    #dcoll = DistCollector(mainDir)
-    #dcoll.plot("Hyst",thickness="30")
+    dcoll = DistCollector(mainDir)
+    dcoll.plot("Hyst",thickness="20")
     integ=integral("dot_Hyst_500_00_s30.dat",mainDir)
+    
     maps=mapsHystEnergy(mainDir)
     maps.plotMap()
+    
+  
     #print(dcoll.distrs["Hyst"]["300"]["30"].x)
     #print(integ.energy)
 
