@@ -3,6 +3,11 @@ import h5py
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+Basic script Open a HDF5 file of my simulation and compute the Hysteresis loop, saves data in an opportune file with specific naming pattern
+at the end plots the calculated loop.
+"""
+
 mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
 filename= "dot_200_00_s30.h5"
 outputfile=filename.split(".", 1)[0]+".dat"

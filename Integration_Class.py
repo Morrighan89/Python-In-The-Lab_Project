@@ -8,6 +8,7 @@ from scipy.interpolate import griddata
 
 class integral:
     """
+    Standalone version of integrate class
     This class load the data given a filename and integrates the curve
     """
     def __init__(self, filename, mainDir, is_avoid_zeros=True):
