@@ -203,7 +203,7 @@ class DistCollector:
             maxLen: int, opt
             max length of the string to be searched 
         """
-        ffilename = os.path.splitext(filename)[0] 
+        filename = os.path.splitext(filename)[0] 
         filename = os.path.split(filename)[1] 
         filename = filename.split("_t")[-1] 
         filename = filename.split("_")[0]
