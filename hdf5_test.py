@@ -32,8 +32,8 @@ def calcoloMagnMedia(time,file,Volumes):
     return data
 
 if  __name__ == '__main__':
-    mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
-    filename= "dot_200_00_s30.h5"
+    mainDir = "W:\\Micro\\2d3d\\c27"
+    filename= "dot150n50c27_1.h5"
     outputfile=filename.split(".", 1)[0]+".dat"
     outputfile=outputfile.split("_", 1)[0]+"_Hyst_"+outputfile.split("_", 1)[1]
     print(outputfile)
