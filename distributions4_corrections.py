@@ -33,23 +33,25 @@ class Dist:
     """
     def __init__(self, filename, is_avoid_zeros=True):
         # It is better to make general x,y arrays
-        if os.path.isfile(filename):
-            self.x, self.y = np.loadtxt(filename, comments="#", unpack=True)
-            if is_avoid_zeros:
-                s_len = len(self.x)
-                self.x, self.y = self.avoid_zeros()
-                print("%i lines deleted" % (s_len - len(self.x)))
-        else:
+        
+        if not os.path.isfile(filename):
             filename='%s %s' %(filename.split(".dat",1)[0],".DAT")
-            if os.path.isfile(filename):
+            if not os.path.isfile(filename):
+                print("%s file do not exists" % (filename))
+                self.x, self.y=[0,0]
+            else:
                 self.x, self.y = np.loadtxt(filename, comments="#", unpack=True)
                 if is_avoid_zeros:
                     s_len = len(self.x)
                     self.x, self.y = self.avoid_zeros()
                     print("%i lines deleted" % (s_len - len(self.x)))
-            else:
-                print("%s file do not exists" % (filename))
-                self.x, self.y=[0,0]
+        else:
+            self.x, self.y = np.loadtxt(filename, comments="#", unpack=True)
+            if is_avoid_zeros:
+                s_len = len(self.x)
+                self.x, self.y = self.avoid_zeros()
+                print("%i lines deleted" % (s_len - len(self.x)))
+        
     
     def avoid_zeros(self):
         is_not_zero = self.y != 0
@@ -266,23 +268,13 @@ class Integral:
     This class load the data given a filename and integrates the curve
     """
     def __init__(self, filename, mainDir, is_avoid_zeros=True):
-        # It is better to make general x,y arrays
         self._mainDir = mainDir
         fname = os.path.join(self._mainDir, filename)
-        self.x, self.y = np.loadtxt(fname , comments="#", unpack=True)
-        if is_avoid_zeros:
-            s_len = len(self.x)
-            self.x, self.y = self.avoid_zeros()
-            print("%i lines deleted" % (s_len - len(self.x)))
-        
-        value=integra(self.x, self.y)
+        self.dist=Dist(fname,is_avoid_zeros)
+        # It is better to make general x,y arrays        
+        value=integra( self.dist.x,  self.dist.y)
         self.energy=2*4*np.pi*1.e-7*value
 
-    def avoid_zeros(self):
-        is_not_zero = self.y != 0
-        x = self.x[is_not_zero]
-        y = self.y[is_not_zero]
-        return x, y
 
 class MapsHystEnergy:
     """
