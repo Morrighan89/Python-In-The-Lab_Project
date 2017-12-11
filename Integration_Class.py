@@ -44,8 +44,8 @@ class Integral:
             self.x, self.y = self.avoid_zeros()
             print("%i lines deleted" % (s_len - len(self.x)))
         
-        value=integra(self.x, self.y)
-        self.energy=2*4*np.pi*1.e-7*value
+        self.value=integra(self.x, self.y)
+        self.energy=2*4*np.pi*1.e-7* self.value
 
     def avoid_zeros(self):
         is_not_zero = self.y != 0
@@ -57,12 +57,12 @@ if __name__ == "__main__":
     mainDir = "W:\\Micro\\Riccardo\\Dot\\Single\\Results\\Hyst_new\\Bis"
     filename="dot_Hy_650_t25_bis.dat"
     integ=Integral(filename,mainDir)
-    energy=2*4*np.pi*1.e-7*integ.result
+    #energy=2*4*np.pi*1.e-7*integ.value
     dati=np.array([])
-    dati=np.append(dati,(int(150),int(50),float(2),energy))
+    dati=np.append(dati,(int(150),int(50),float(2),integ.energy))
     dati=np.reshape(dati,(-1,4))
     print(dati)
     outputfile=filename.split(".", 1)[0]+".dat"
     outputfile="Energy_"+outputfile
     np.savetxt(outputfile,dati,fmt='%4d %4d %4.2f %12.8e',header='diametro numero concentrazione energia')
-    print(energy)
+    print(integ.energy)
