@@ -4,6 +4,27 @@ import scipy.integrate as integrate
 import scipy.ndimage
 import matplotlib.pylab as plt
 from scipy.interpolate import griddata
+def integra(x,y,method='simps'):
+        fullHyst = x[-1] == x[0]
+        if fullHyst:
+           middle=int(np.round(x.size/4))
+           top=int(np.round(x.size/2))
+           if method=='simps':
+               branchup=integrate.simps(y[0:middle],x[0:middle])
+               branchdown=integrate.simps(y[middle:top],x[middle:top])
+           else:
+               branchup=integrate.trapz(y[0:middle],x[0:middle])
+               branchdown=integrate.trapz(y[middle:top],x[middle:top])   
+           result=-branchdown-branchup
+        else:
+            if method=='simps':
+                branchdown=integrate.simps(y,x)
+                branchup=integrate.simps(-np.flipud(y),-np.flipud(x))
+            else:
+                branchdown=integrate.trapz(y,x)
+                branchup=integrate.trapz(-np.flipud(y),-np.flipud(x))
+            result=(-branchdown+branchup)/2
+        return result
 
 class Dist:
     """
@@ -264,8 +285,8 @@ class Integral:
             s_len = len(self.x)
             self.x, self.y = self.avoid_zeros()
             print("%i lines deleted" % (s_len - len(self.x)))
-        self.fullHyst=self.x[-1]-self.x[0]
-        value=self.integra()
+        
+        value=integra(self.x, self.y)
         self.energy=2*4*np.pi*1.e-7*value
 
     def avoid_zeros(self):
@@ -273,21 +294,6 @@ class Integral:
         x = self.x[is_not_zero]
         y = self.y[is_not_zero]
         return x, y
-
-    def integra(self):
-        
-        if self.fullHyst==0:
-           middle=int(np.round(self.x.size/4))
-           top=int(np.round(self.x.size/2))
-           self._branchup=integrate.simps(self.y[0:middle],self.x[0:middle])
-           self._branchdown=integrate.simps(self.y[middle:top],self.x[middle:top])
-           self.result=-self._branchdown-self._branchup
-        else:
-           middle=int(np.round(self.x.size/2))
-           self._branchdown=integrate.simps(self.y,self.x)
-           self._branchup=integrate.simps(-np.flipud(self.y),-np.flipud(self.x))
-           self.result=(-self._branchdown+self._branchup)/2
-        return self.result
 
 class MapsHystEnergy:
     """
@@ -313,20 +319,7 @@ class MapsHystEnergy:
     """
     def __init__(self, mainDir,structure="dot"):
         self.dist=DistCollector(mainDir)
-    def integra(self,x,y):
-        self.fullHyst=x[-1]-x[0]
-        if self.fullHyst==0:
-           middle=int(np.round(x.size/4))
-           top=int(np.round(x.size/2))
-           self._branchup=integrate.simps(y[0:middle],x[0:middle])
-           self._branchdown=integrate.simps(y[middle:top],x[middle:top])
-           self.result=-self._branchdown-self._branchup
-        else:
-           middle=int(np.round(x.size/2))
-           self._branchdown=integrate.simps(y,x)
-           self._branchup=integrate.simps(-np.flipud(y),-np.flipud(x))
-           self.result=(-self._branchdown+self._branchup)/2
-        return self.result
+
 
     def setData(self,outName="mapdata",structure="dot",dis_type="Hyst"): 
         points=np.array([])    
@@ -335,7 +328,7 @@ class MapsHystEnergy:
         for diam in sorted(self.dist.distrs[dis_type]):
             for thick in sorted(self.dist.distrs[dis_type][diam]):
                 points=np.append(points,(int(diam),float(thick)))
-                value=self.integra(self.dist.distrs[dis_type][diam][thick].x,self.dist.distrs[dis_type][diam][thick].y)
+                value=integra(self.dist.distrs[dis_type][diam][thick].x,self.dist.distrs[dis_type][diam][thick].y)
                 self.energy=2*4*np.pi*1.e-7*value
                 values=np.append(values,self.energy)
                 print(self.energy,diam,thick)
@@ -352,12 +345,9 @@ class MapsHystEnergy:
         #xmax=np.max(points[:,0])
         #ymin=np.min(points[:,1])
         #ymax=np.max(points[:,1])
-        
         grid_x, grid_y = np.mgrid[np.min(points[:,0]):np.max(points[:,0]):100j, np.min(points[:,1]):np.max(points[:,1]):100j]
-        #print(grid_x, grid_y)
-        
-        grid_z0 = griddata((points[:,0],points[:,1]), values, (grid_x, grid_y), method='cubic',fill_value=np.min(values)/2)
-        print(np.min(values)/2)
+        fill=(np.min(values)/2)
+        grid_z0 = griddata((points[:,0],points[:,1]), values, (grid_x, grid_y), method='linear',fill_value=np.nan)
         #
         origin = 'lower'
         CS=plt.contourf(grid_x,grid_y,grid_z0[:,:,0],100)
@@ -367,7 +357,6 @@ class MapsHystEnergy:
                           origin=origin,
                           hold='on')
         plt.clabel(CS2, fontsize=9, inline=1)
-        #plt.axis([200, 650, 10, 30])
         plt.colorbar(CS)
         plt.show()
 
@@ -378,12 +367,9 @@ if __name__ == "__main__":
 
     dcoll = DistCollector(mainDir)
     dcoll.plot("Hyst",thickness="20")
-    #integ=integral("dot_Hyst_500_00_s30.dat",mainDir)
-    
+    integ=Integral("dot_Hyst_500_00_s30.dat",mainDir)
     maps=MapsHystEnergy(mainDir)
     maps.plotMap()
-    
-  
     #print(dcoll.distrs["Hyst"]["300"]["30"].x)
-    #print(integ.energy)
+    print(integ.energy)
 
