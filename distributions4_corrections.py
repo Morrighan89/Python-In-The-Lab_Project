@@ -155,7 +155,6 @@ class DistCollector:
         plt.show()
 
     def _get_parameters(self, pattern=".dat", n_elements=5):
-        ## This code substites the next three methods
         filenames = glob.glob1(self._mainDir, "*")
         filenames = [os.path.splitext(filename)[0] for filename in filenames if pattern.upper() in filename.upper()]
         q = np.concatenate([np.array(filename.split("_")[:n_elements]) for filename in filenames]).flatten()
@@ -169,79 +168,7 @@ class DistCollector:
         # Here you can add your test (maxLen, etc)
 
 
-#   def _get_distribution_types(self,pattern=".dat", maxLen=4):
-#       """
-#       find the type of distributions in the given directory, reading the 2nd position in the files name
-#       and returns all the availble diameters as in dot_Hyst_100_00_s20.dat
-#       Parameters:
-#       ===========
-#           maxLen: int, opt
-#           max length of the string to be searched 
-#       """
-#       filenames = glob.glob1(self._mainDir, "*")
-#       filenames = [os.path.splitext(filename)[0] for filename in filenames if pattern.upper() in filename.upper()]
-#       filenames = [os.path.split(filename)[1] for filename in filenames]
-#       filenames = [filename.split("_", 2)[1] for filename in filenames]
-#       dis_types = [filename for filename in filenames if len(filename) <= maxLen]
-#       dis_types = set(dis_types)
-#       return dis_types
-#
-#   def _get_diameters(self, maxLen=3):
-#       """
-#       find the diameter or maxdimension of the object (denoted by dimension in nanometers)
-#       in the given directory, reading the 3rd position in the file names and returns all the availble diameters
-#       as in dot_Hyst_100_00_s20.dat
-#       Parameters:
-#       ===========
-#           maxLen: int, opt
-#           max length of the string to be searched 
-#       """
-#       filenames = glob.glob(os.path.join(self._mainDir, "*.DAT"))
-#       filenames = [os.path.splitext(filename)[0] for filename in filenames]
-#       filenames = [os.path.split(filename)[1] for filename in filenames]
-#       print('\n'.join(filenames))
-#       filenames = [filename.split("_",3)[2] for filename in filenames]
-#       diameters = [filename for filename in filenames if len(filename) <= maxLen]
-#       diameters = set(diameters)
-#       return diameters
-#   def _get_thicknesses(self, maxLen=4):
-#       """
-#       find the thickness of a collection of object in the given directory,
-#       reading the 5th position in the file names and returns all the availble thicknesses
-#       as in dot_Hyst_100_00_s20.dat
-#       Parameters:
-#       ===========
-#           maxLen: int, opt
-#           max length of the string to be searched 
-#       """
-#       filenames = glob.glob(os.path.join(self._mainDir, "*.DAT"))
-#       filenames = [os.path.splitext(filename)[0] for filename in filenames]
-#       filenames = [os.path.split(filename)[1] for filename in filenames]
-#       print('\n'.join(filenames))
-#       filenames = [filename.split("_s",1)[1] for filename in filenames]
-#       for filename in filenames:
-#              if "v" in filename:
-#                 filename = ['%s.%s' %(filename.split("v",1)[0],filename.split("v",1)[1])]
-#       thicknesses = [filename for filename in filenames if len(filename) <= maxLen]
-#       thicknesses = set(thicknesses)
-#       return thicknesses
-#   def _get_diameter(self,filename,maxLen=3):
-#       """
-#       find the diameter or maxdimension of the object (denoted by dimension in nanometers)
-#       looking at the third position in the file name
-#       as in dot_Hyst_100_00_s20.dat
-#       Parameters:
-#       ===========
-#           filename
-#           maxLen: int, opt
-#           max length of the string to be searched 
-#       """
-#       filename = os.path.splitext(filename)[0] 
-#       filename = os.path.split(filename)[1] 
-#       filename = filename.split("_",3)[2] 
-#       diameter = filename 
-#       return diameter
-#
+
     def _get_thickness(self,filename, maxLen=3):
         """
         find the diameter or maxdimension of the objecr (denoted by dimension in nanometers)
@@ -349,3 +276,80 @@ if __name__ == "__main__":
     maps.plotMap()
     print(integ.energy)
 
+##################################################################################################
+##############################   OLD CODE   ######################################################
+##################################################################################################
+
+#   def _get_distribution_types(self,pattern=".dat", maxLen=4):
+#       """
+#       find the type of distributions in the given directory, reading the 2nd position in the files name
+#       and returns all the availble diameters as in dot_Hyst_100_00_s20.dat
+#       Parameters:
+#       ===========
+#           maxLen: int, opt
+#           max length of the string to be searched 
+#       """
+#       filenames = glob.glob1(self._mainDir, "*")
+#       filenames = [os.path.splitext(filename)[0] for filename in filenames if pattern.upper() in filename.upper()]
+#       filenames = [os.path.split(filename)[1] for filename in filenames]
+#       filenames = [filename.split("_", 2)[1] for filename in filenames]
+#       dis_types = [filename for filename in filenames if len(filename) <= maxLen]
+#       dis_types = set(dis_types)
+#       return dis_types
+#
+#   def _get_diameters(self, maxLen=3):
+#       """
+#       find the diameter or maxdimension of the object (denoted by dimension in nanometers)
+#       in the given directory, reading the 3rd position in the file names and returns all the availble diameters
+#       as in dot_Hyst_100_00_s20.dat
+#       Parameters:
+#       ===========
+#           maxLen: int, opt
+#           max length of the string to be searched 
+#       """
+#       filenames = glob.glob(os.path.join(self._mainDir, "*.DAT"))
+#       filenames = [os.path.splitext(filename)[0] for filename in filenames]
+#       filenames = [os.path.split(filename)[1] for filename in filenames]
+#       print('\n'.join(filenames))
+#       filenames = [filename.split("_",3)[2] for filename in filenames]
+#       diameters = [filename for filename in filenames if len(filename) <= maxLen]
+#       diameters = set(diameters)
+#       return diameters
+#   def _get_thicknesses(self, maxLen=4):
+#       """
+#       find the thickness of a collection of object in the given directory,
+#       reading the 5th position in the file names and returns all the availble thicknesses
+#       as in dot_Hyst_100_00_s20.dat
+#       Parameters:
+#       ===========
+#           maxLen: int, opt
+#           max length of the string to be searched 
+#       """
+#       filenames = glob.glob(os.path.join(self._mainDir, "*.DAT"))
+#       filenames = [os.path.splitext(filename)[0] for filename in filenames]
+#       filenames = [os.path.split(filename)[1] for filename in filenames]
+#       print('\n'.join(filenames))
+#       filenames = [filename.split("_s",1)[1] for filename in filenames]
+#       for filename in filenames:
+#              if "v" in filename:
+#                 filename = ['%s.%s' %(filename.split("v",1)[0],filename.split("v",1)[1])]
+#       thicknesses = [filename for filename in filenames if len(filename) <= maxLen]
+#       thicknesses = set(thicknesses)
+#       return thicknesses
+#   def _get_diameter(self,filename,maxLen=3):
+#       """
+#       find the diameter or maxdimension of the object (denoted by dimension in nanometers)
+#       looking at the third position in the file name
+#       as in dot_Hyst_100_00_s20.dat
+#       Parameters:
+#       ===========
+#           filename
+#           maxLen: int, opt
+#           max length of the string to be searched 
+#       """
+#       filename = os.path.splitext(filename)[0] 
+#       filename = os.path.split(filename)[1] 
+#       filename = filename.split("_",3)[2] 
+#       diameter = filename 
+#       return diameter
+#
