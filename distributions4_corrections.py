@@ -157,7 +157,7 @@ class DistCollector:
         # Here you can add your test (maxLen, etc)
 
 
-    def _get_distribution_types(self, maxLen=4):
+    def _get_distribution_types(self,pattern=".dat", maxLen=4):
         """
         find the type of distributions in the given directory, reading the 2nd position in the files name
         and returns all the availble diameters as in dot_Hyst_100_00_s20.dat
@@ -166,8 +166,8 @@ class DistCollector:
             maxLen: int, opt
             max length of the string to be searched 
         """
-        filenames = glob.glob(os.path.join(self._mainDir, "*.DAT"))
-        filenames = [os.path.splitext(filename)[0] for filename in filenames]
+        filenames = glob.glob1(self._mainDir, "*")
+        filenames = [os.path.splitext(filename)[0] for filename in filenames if pattern.upper() in filename.upper()]
         filenames = [os.path.split(filename)[1] for filename in filenames]
         filenames = [filename.split("_", 2)[1] for filename in filenames]
         dis_types = [filename for filename in filenames if len(filename) <= maxLen]
