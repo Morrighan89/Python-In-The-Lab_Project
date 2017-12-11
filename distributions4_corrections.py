@@ -355,6 +355,5 @@ if __name__ == "__main__":
     integ=Integral("dot_Hyst_500_00_s30.dat",mainDir)
     maps=MapsHystEnergy(mainDir)
     maps.plotMap()
-    print(dcoll.distrs["Hyst"]["300"]["30"].x)
     print(integ.energy)
 

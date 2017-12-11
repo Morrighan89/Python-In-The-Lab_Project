@@ -5,8 +5,31 @@ import scipy.ndimage
 import matplotlib.pylab as plt
 from scipy.interpolate import griddata
 
+def integra(x,y,method='simps'):
+        fullHyst = x[-1] == x[0]
+        if fullHyst:
+           middle=int(np.round(x.size/4))
+           top=int(np.round(x.size/2))
+           if method=='simps':
+               branchup=integrate.simps(y[0:middle],x[0:middle])
+               branchdown=integrate.simps(y[middle:top],x[middle:top])
+           else:
+               branchup=integrate.trapz(y[0:middle],x[0:middle])
+               branchdown=integrate.trapz(y[middle:top],x[middle:top])   
+           result=-branchdown-branchup
+        else:
+            if method=='simps':
+                branchdown=integrate.simps(y,x)
+                branchup=integrate.simps(-np.flipud(y),-np.flipud(x))
+            else:
+                branchdown=integrate.trapz(y,x)
+                branchup=integrate.trapz(-np.flipud(y),-np.flipud(x))
+            result=(-branchdown+branchup)/2
+        return result
 
-class integral:
+
+
+class Integral:
     """
     Standalone version of integrate class
     This class load the data given a filename and integrates the curve
@@ -20,8 +43,8 @@ class integral:
             s_len = len(self.x)
             self.x, self.y = self.avoid_zeros()
             print("%i lines deleted" % (s_len - len(self.x)))
-        self.fullHyst=self.x[-1]-self.x[0]
-        value=self.integra()
+        
+        value=integra(self.x, self.y)
         self.energy=2*4*np.pi*1.e-7*value
 
     def avoid_zeros(self):
@@ -30,27 +53,10 @@ class integral:
         y = self.y[is_not_zero]
         return x, y
 
-    def integra(self):
-        
-        if self.fullHyst==0:
-           middle=int(np.round(self.x.size/4))
-           top=int(np.round(self.x.size/2))
-           self._branchup=integrate.simps(self.y[0:middle],self.x[0:middle])
-           self._branchdown=integrate.simps(self.y[middle:top],self.x[middle:top])
-           self.result=self._branchdown-self._branchup
-        else:
-           middle=int(np.round(self.x.size/2))
-           #self._branchup=integrate.simps(self.y[0: middle],self.x[0: middle])
-           #self._branchdown=integrate.simps(self.y[middle:self.x.size],self.x[middle:self.x.size])
-           self._branchdown=integrate.simps(self.y,self.x)
-           self._branchup=integrate.simps(-np.flipud(self.y),-np.flipud(self.x))
-           self.result=(-self._branchdown+self._branchup)/2
-        return self.result
-
 if __name__ == "__main__":
     mainDir = "W:\\Micro\\Riccardo\\Dot\\Single\\Results\\Hyst_new\\Bis"
     filename="dot_Hy_650_t25_bis.dat"
-    integ=integral(filename,mainDir)
+    integ=Integral(filename,mainDir)
     energy=2*4*np.pi*1.e-7*integ.result
     dati=np.array([])
     dati=np.append(dati,(int(150),int(50),float(2),energy))
