@@ -59,35 +59,15 @@ if  __name__ == '__main__':
     outputdata=np.array([])
     Volumes=np.array(datasetVol[()])
     for i in range(1,numTimeSteps):
-        #dataset_Magnet   = '/Magnetizzazione%s/Val'%(i)
-        #dataset_Hext   = '/Hext%s/Val'%(i)
-        ##print(dataset_Magnet)
-        #datasetM = file[dataset_Magnet]
-        ##print(datasetM.shape, isinstance(datasetM,h5py.Dataset))
-        ##magnetizzazione  = np.matrix(datasetM[0:103,:])
-        #magnetizzazione  = np.matrix(datasetM[()])
-    #
-        ##print(np.shape(magnetizzazione))
-        #proiez=np.dot(np.dot(magnetizzazione,versore),versoreT)
-        ##print(proiez,i, "\n")
-        #datasetH = file[dataset_Hext]
-        ##print(datasetH.shape, isinstance(datasetH,h5py.Dataset))
-        ##Hext= datasetH[0:103,0]
-        #Hext= datasetH[(0)]
-        #np.savetxt("uffa",proiez)
-        #mediau=np.append(mediau,np.average(proiez[:,0],weights=Volumes))
-        #mediav=np.append(mediav,np.average(proiez[:,1],weights=Volumes))
-        #mediaw=np.append(mediaw,np.average(proiez[:,2],weights=Volumes))
-        #Hexternal=np.append(Hexternal,Hext[0])
+
         outputdata=np.append(outputdata,calcoloMagnMedia(int(i),file,Volumes))
         
-        #endforloop
     print(np.shape(outputdata) , "np.shape outputdata")
     outputdata=np.reshape(outputdata,(-1,4))
     np.savetxt(outputfile, outputdata, fmt='%26.18e')
 
     file.close()
-    #print(Hexternal)
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
     lb = "u"
@@ -101,8 +81,7 @@ if  __name__ == '__main__':
     #plt.plot(Hexternal, mediau)
     plt.show()
     #
-    # print ('arr1ev.shape =', arr1ev.shape)
-    #print ('\n media =', media,'\n versore =', versore)
+
 
 
 
