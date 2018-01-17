@@ -2,11 +2,30 @@ import glob, os, sys
 import h5py
 import numpy as np
 import matplotlib.pyplot as plt
+import mysettings
 
 """
 Basic script Open a HDF5 file of my simulation and compute the Hysteresis loop, saves data in an opportune file with specific naming pattern
 at the end plots the calculated loop.
 """
+
+class Soluzione:
+    """
+    This class load the data given a filename
+    and gives the possibility to generate a plot with the uploaded data
+    """
+    def __init__(self, filename):
+        # It is better to make general x,y arrays
+        
+        if not os.path.isfile(filename):
+            filename='%s %s' %(filename.split(".h5",1)[0],".H5")
+            if not os.path.isfile(filename):
+                print("%s file do not exists" % (filename))
+    def loadDataStructure (self):
+        file = h5py.File(filename, 'r')
+
+        
+            
 def calcoloMagnMedia(time,file,Volumes):
     data=np.array([])
     dataset_Magnet   = '/Emme%s/Val'%(time)
@@ -33,15 +52,14 @@ def calcoloMagnMedia(time,file,Volumes):
 
 if  __name__ == '__main__':
     mainDir = "C:\\Users\\r.ferrero\\Desktop\\fast"
-    filename= "dot280s28hy.h5"
+    filename= "dot_280_s28_hy.h5"
     outputfile=filename.split(".", 1)[0]+".dat"
     outputfile=outputfile.split("_", 1)[0]+"_Hyst_"+outputfile.split("_", 1)[1]
     print(outputfile)
     hdf5_file_name = os.path.join(mainDir, filename)
 
     
-    dataset_numTimeSteps ='/Timesteps/TimeSteps#'
-    dataset_Volumes ='/Volumes'
+
     event_number   = 5
     
     versore=np.array([[1],[0],[0]])
