@@ -25,8 +25,13 @@ class Soluzione:
         file = h5py.File(filename, 'r')
         self.numTimeSteps=file[dataset_numTimeSteps][(0)]
         dataVolumes=file[dataset_Volumes]
-        if dataVolumes.shape == 1 self.meshType='structured'
-        else self.meshType='unstructured'
+        if dataVolumes.shape == 1
+            self.meshType='structured'
+            Volumes=np.array(dataVolumes[()])
+        else 
+            self.meshType='unstructured'
+            Volumes=np.array(dataVolumes[()])
+    
 
         
             
