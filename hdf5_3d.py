@@ -16,13 +16,17 @@ class Soluzione:
     """
     def __init__(self, filename):
         # It is better to make general x,y arrays
-        
+        self.meshType
         if not os.path.isfile(filename):
             filename='%s %s' %(filename.split(".h5",1)[0],".H5")
             if not os.path.isfile(filename):
                 print("%s file do not exists" % (filename))
     def loadDataStructure (self):
         file = h5py.File(filename, 'r')
+        self.numTimeSteps=file[dataset_numTimeSteps][(0)]
+        dataVolumes=file[dataset_Volumes]
+        if dataVolumes.shape == 1 self.meshType='structured'
+        else self.meshType='unstructured'
 
         
             
