@@ -37,8 +37,8 @@ def calcoloMagnMedia(time,file,versoreu,versorev,versorew):
     return data
 
 if  __name__ == '__main__':
-    mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150"
-    filename= "dot_156_s28_30_hy.h5"
+    mainDir = "C:\\Projects\\Sally_adaptive_test_case"
+    filename= "Cube100_f.h5"
     outputfile=filename.split(".", 1)[0]+".dat"
     outputfile=outputfile.split("_", 1)[0]+"_Hyst_"+outputfile.split("_", 1)[1]
     print(outputfile)
