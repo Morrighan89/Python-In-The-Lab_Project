@@ -42,15 +42,6 @@ def calcoloMagnMedia(time, file, versoreu, versorev, versorew):
     return data
 
 
-def find_Equi(name):
-    pippo = dict()
-
-    """ Find first object with 'foo' anywhere in the name """
-    if 'Emme' in name:
-        pippo[i] = name.split("Emme", 1)[0]
-        i=i+1
-
-
 if __name__ == '__main__':
     mainDir = "C:\\Projects\\Sally_adaptive_test_case"
     filename = "Cube100_f.h5"
@@ -72,7 +63,7 @@ if __name__ == '__main__':
 
     equilibria = [name.split('Emme',1)[1] for name in file if 'Emme' in name]
     equilibria = [int(i) for i in equilibria]
-    print(sorted(equilibria))
+
     datasetTime = file[dataset_numTimeSteps]
     # datasetVol=file[dataset_Volumes]
     numTimeSteps = datasetTime[(0)]
