@@ -54,7 +54,7 @@ if  __name__ == '__main__':
     versorew=np.array([[-0.50001],[0],[0.86602]])
     #versoreT=np.reshape(versore,(1,3))
     file    = h5py.File(hdf5_file_name, 'r')   # 'r' means that hdf5 file is open in read-only mode
-    
+    file.visit()
     datasetTime=file[dataset_numTimeSteps]
     #datasetVol=file[dataset_Volumes]
     numTimeSteps= datasetTime[(0)]
