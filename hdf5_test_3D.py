@@ -1,7 +1,37 @@
 import glob, os, sys
 import h5py
 import numpy as np
+import matplotlib
+from matplotlib.backends.backend_pgf import FigureCanvasPgf
+matplotlib.backend_bases.register_backend('pdf', FigureCanvasPgf)
+
 import matplotlib.pyplot as plt
+
+pgf_with_custom_preamble = {
+    "pgf.texsystem": "lualatex",
+    "font.family": "serif",  # use serif/main font for text elements
+    "text.usetex": True,     # use inline math for ticks
+    "pgf.rcfonts": False,    # don't setup fonts from rc parameters
+    "axes.labelsize": 16,
+    "font.size": 18,
+    "legend.fontsize": 16,
+    "axes.titlesize": 16,           # Title size when one figure
+    "xtick.labelsize": 16,
+    "ytick.labelsize": 16,
+    "figure.titlesize": 18,         # Overall figure title
+    "pgf.preamble": [
+         r'\usepackage{fontspec}',
+         r'\usepackage{units}',          # load additional packages
+         r'\usepackage{metalogo}',
+         r'\usepackage{unicode-math}',   # unicode math setup
+         r'\setmathfont{XITS Math}',
+         r'\setmonofont{Libertinus Mono}'
+         r'\setmainfont{Libertinus Serif}',  # serif font via preamble
+         ]
+}
+matplotlib.rcParams.update(pgf_with_custom_preamble)
+
+
 
 """
 Basic script Open a HDF5 file of my simulation and compute the Hysteresis loop, saves data in an opportune file with specific naming pattern
@@ -87,13 +117,30 @@ if __name__ == '__main__':
     fig = plt.figure()
     ax = fig.add_subplot(111)
     lb = "u"
-    ax.plot(outputdata[:, 0], outputdata[:, 1], label=lb)
+    ax.plot(outputdata[:, 0]/1000, outputdata[:, 1]/1000, label=lb)
     lb = "v"
-    ax.plot(outputdata[:, 2], outputdata[:, 3], label=lb)
+    ax.plot(outputdata[:, 2]/1000, outputdata[:, 3]/1000, label=lb)
     lb = "w"
-    ax.plot(outputdata[:, 4], outputdata[:, 5], label=lb)
+    ax.plot(outputdata[:, 4]/1000, outputdata[:, 5]/1000, label=lb)
     ax.legend(numpoints=1)
     ax.grid(True)
+
+    ax.ticklabel_format(axis='both', style='sci', scilimits=(-2, 2),useMathText=True)
+    #fmt = matplotlib.ticker.StrMethodFormatter("{x:2.2e}")
+
+    #ax.xaxis.set_major_formatter(fmt)
+    #ax.yaxis.set_major_formatter(fmt)
+
+    ax.set_xlabel('\\textbf{Applied field} (kA/m)')
+    ax.set_ylabel('\\textbf{Magnetization} (kA/m)')
+    #ax.set_title(r'\TeX\ is Number $\displaystyle\sum_{n=1}^\infty \frac{-e^{i\pi}}{2^n}$!', color='r')
+    fig.text(0.5, 1.01 ,r'\TeX\ is Number $\displaystyle\sum_{n=1}^\infty'
+                 r'\frac{-e^{i\pi}}{2^n}$!', color='r', horizontalalignment='center',transform = ax.transAxes)
+    plt.tight_layout()
+    #plt.subplots_adjust(top=0.995)
+    plt.legend(loc='best')
     # plt.plot(Hexternal, mediau)
+
+    plt.savefig('matplot-latex.pdf', bbox_inches='tight', transparent=True,)
     plt.show()
     #
