@@ -339,8 +339,8 @@ if __name__ == "__main__":
 
 
     dcoll = DistCollector(mainDir)
-    dcoll.plot("Hyst",thickness="20")
-    integ=integral("dot_Hyst_500_00_s30.dat",mainDir)
+    dcoll.plot("Hyst",diameter="400")
+    #integ=integral("dot_Hyst_500_00_s30.dat",mainDir)
     
     maps=mapsHystEnergy(mainDir)
     maps.plotMap()

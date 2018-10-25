@@ -18,22 +18,32 @@ def calcoloMagnMedia(time,file,Volumes):
     magnetizzazione  = np.matrix(datasetM[()])
 
     #print(np.shape(magnetizzazione))
-    proiez=np.dot(np.dot(magnetizzazione,versore),versoreT)
+    #proiez=np.dot(np.dot(magnetizzazione,versore),versoreT)
+
+    proiezu = np.dot(magnetizzazione, versoreu)
+    proiezv = np.dot(magnetizzazione, versorev)
+    proiezw = np.dot(magnetizzazione, versorew)
+
     #print(proiez,i, "\n")
     datasetH = file[dataset_Hext]
     #print(datasetH.shape, isinstance(datasetH,h5py.Dataset))
     #Hext= datasetH[0:103,0]
     Hext= datasetH[(0)]
-    np.savetxt("uffa",proiez)
-    mediau=np.average(proiez[:,0],weights=Volumes)
-    mediav=np.average(proiez[:,1],weights=Volumes)
-    mediaw=np.average(proiez[:,2],weights=Volumes)
-    data=np.append(data,[Hext[0],mediau,mediav,mediaw])
+    Hext = np.dot(np.dot(Hext, versoreu), np.reshape((1, 0, 0), (1, 3))) + np.dot(np.dot(Hext, versorev),
+                                                                                  np.reshape((0, 1, 0),
+                                                                                             (1, 3))) + np.dot(
+        np.dot(Hext, versorew), np.reshape((0, 0, 1), (1, 3)))
+    #np.savetxt("uffa",proiezu)
+    mediau=np.average(proiezu,weights=Volumes)
+    mediav=np.average(proiezv,weights=Volumes)
+    mediaw=np.average(proiezw,weights=Volumes)
+    data=np.append(data, [Hext[0], mediau, Hext[1], mediav, Hext[2], mediaw])
     return data
 
 if  __name__ == '__main__':
-    mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
-    filename= "dot_200_00_s30.h5"
+    mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\2d3d"
+    #mainDir = "S:\\Alessandra\\2D3D"
+    filename= "dot200t20n30_h8_1.h5"
     outputfile=filename.split(".", 1)[0]+".dat"
     outputfile=outputfile.split("_", 1)[0]+"_Hyst_"+outputfile.split("_", 1)[1]
     print(outputfile)
@@ -43,9 +53,12 @@ if  __name__ == '__main__':
     dataset_numTimeSteps ='/Timesteps/TimeSteps#'
     dataset_Volumes ='/Volumes'
     event_number   = 5
-    
-    versore=np.array([[1],[0],[0]])
-    versoreT=np.reshape(versore,(1,3))
+
+    versoreu = np.array([[1],[0],[0]])
+    versorev = np.array([[0], [1], [0]])
+    versorew = np.array([[0],[0],[1]])
+
+
     file    = h5py.File(hdf5_file_name, 'r')   # 'r' means that hdf5 file is open in read-only mode
     
     datasetTime=file[dataset_numTimeSteps]
@@ -63,19 +76,20 @@ if  __name__ == '__main__':
         outputdata=np.append(outputdata,calcoloMagnMedia(int(i),file,Volumes))
         
     print(np.shape(outputdata) , "np.shape outputdata")
-    outputdata=np.reshape(outputdata,(-1,4))
-    np.savetxt(outputfile, outputdata, fmt='%26.18e')
+    outputdata = np.reshape(outputdata, (-1, 6))
+    np.savetxt(os.path.join(mainDir, outputfile), outputdata, fmt='%26.18e')
+
 
     file.close()
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     lb = "u"
-    ax.plot(outputdata[:,0], outputdata[:,1],label=lb)
+    ax.plot(outputdata[1:-1, 0]/1000, outputdata[1:-1, 1]/1000, label=lb)
     lb = "v"
-    ax.plot(outputdata[:,0], outputdata[:,2],label=lb)
+    ax.plot(outputdata[1:-1, 2]/1000, outputdata[1:-1, 3]/1000, label=lb)
     lb = "w"
-    ax.plot(outputdata[:,0], outputdata[:,3],label=lb)
+    ax.plot(outputdata[1:-1, 4]/1000, outputdata[1:-1, 5]/1000, label=lb)
     ax.legend(numpoints=1)
     ax.grid(True)
     #plt.plot(Hexternal, mediau)

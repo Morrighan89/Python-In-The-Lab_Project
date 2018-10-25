@@ -2,29 +2,107 @@ import glob, os, sys
 import numpy as np
 import scipy.integrate as integrate
 import scipy.ndimage
-import matplotlib.pylab as plt
+import matplotlib.pylab as pltt
 from scipy.interpolate import griddata
-def integra(x,y,method='simps'):
-        fullHyst = x[-1] == x[0]
-        if fullHyst:
-           middle=int(np.round(x.size/4))
-           top=int(np.round(x.size/2))
-           if method=='simps':
-               branchup=integrate.simps(y[0:middle],x[0:middle])
-               branchdown=integrate.simps(y[middle:top],x[middle:top])
-           else:
-               branchup=integrate.trapz(y[0:middle],x[0:middle])
-               branchdown=integrate.trapz(y[middle:top],x[middle:top])   
-           result=-branchdown-branchup
+import matplotlib
+from matplotlib.backends.backend_pgf import FigureCanvasPgf
+matplotlib.backend_bases.register_backend('pdf', FigureCanvasPgf)
+
+import matplotlib.pyplot as plt
+
+pgf_with_custom_preamble = {
+    "pgf.texsystem": "lualatex",
+    "font.family": "serif",  # use serif/main font for text elements
+    "text.usetex": True,     # use inline math for ticks
+    "pgf.rcfonts": False,    # don't setup fonts from rc parameters
+    "axes.labelsize": 16,
+    "font.size": 18,
+    "legend.fontsize": 16,
+    "axes.titlesize": 16,           # Title size when one figure
+    "xtick.labelsize": 16,
+    "ytick.labelsize": 16,
+    "figure.titlesize": 18,         # Overall figure title
+    "pgf.preamble": [
+         r'\usepackage{fontspec}',
+         r'\usepackage{units}',          # load additional packages
+         r'\usepackage{metalogo}',
+         r'\usepackage{unicode-math}',   # unicode math setup
+         r'\setmathfont{XITS Math}',
+         r'\setmonofont{Libertinus Mono}'
+         r'\setmainfont{Libertinus Serif}',  # serif font via preamble
+         ]
+}
+matplotlib.rcParams.update(pgf_with_custom_preamble)
+
+
+def integra(x, y, method='simps'):
+    fullHyst = x[-1] == x[0]
+    if fullHyst:
+        middle = int(np.round(x.size / 2))
+        top = int(np.round(x.size))
+        if method == 'simps':
+            branchup = integrate.simps(y[0:middle], x[0:middle])
+            branchdown = integrate.simps(y[middle:top], x[middle:top])
         else:
-            if method=='simps':
-                branchdown=integrate.simps(y,x)
-                branchup=integrate.simps(-np.flipud(y),-np.flipud(x))
-            else:
-                branchdown=integrate.trapz(y,x)
-                branchup=integrate.trapz(-np.flipud(y),-np.flipud(x))
-            result=(-branchdown+branchup)/2
-        return result
+            branchup = integrate.trapz(y[0:middle], x[0:middle])
+            branchdown = integrate.trapz(y[middle:top], x[middle:top])
+        result = (-branchdown - branchup) / 2
+    else:
+        if method == 'simps':
+            branchdown = integrate.simps(y, x)
+            branchup = integrate.simps(-np.flipud(y), -np.flipud(x))
+        else:
+            branchdown = integrate.trapz(y, x)
+            branchup = integrate.trapz(-np.flipud(y), -np.flipud(x))
+        result = (-branchdown + branchup) / 2
+    return result
+
+def integraHalf(x, y, method='simps'):
+    fullHyst = x[-1] == x[0]
+    if fullHyst:
+        quarter = int(np.round(x.size / 4))
+        triquarter = int(np.round(x.size))-int(np.round(x.size / 4))
+        if method == 'simps':
+            branchup = integrate.simps(y[0:quarter], x[0:quarter])
+            branchdown = integrate.simps(y[triquarter:-1], x[triquarter:-1])
+        else:
+            branchup = integrate.trapz(y[0:quarter], x[0:quarter])
+            branchdown = integrate.trapz(y[triquarter:-1], x[triquarter:-1])
+        result = (branchdown,branchup)
+    else:
+        half = int(np.round(x.size / 2))
+        if method == 'simps':
+            branchdown = integrate.simps(y[0:half], x[0:half])
+            branchup = integrate.simps(y[half:-1], x[half:-1])
+        else:
+            branchdown = integrate.trapz(y[0:half], x[0:half])
+            branchup = integrate.trapz(y[half:-1], x[half:-1])
+            result = (branchdown, branchup)
+    return (branchdown, branchup)
+def integra2Half(x, y, method='simps'):
+    fullHyst = x[-1] == x[0]
+    if fullHyst:
+        quarter = int(np.round(x.size / 4))
+        middle = int(np.round(x.size / 2))
+        triquarter = int(np.round(x.size))-int(np.round(x.size / 4))
+        if method == 'simps':
+            branchup = integrate.simps(y[quarter:middle], x[quarter:middle])
+            branchdown = integrate.simps(y[middle:triquarter], x[middle:triquarter])
+        else:
+            branchup = integrate.trapz(y[quarter:middle], x[quarter:middle])
+            branchdown = integrate.trapz(y[middle:triquarter], x[middle:triquarter])
+        result = (branchdown,branchup)
+    else:
+        half = int(np.round(x.size / 2))
+        if method == 'simps':
+            branchdown = integrate.simps(y[0:half], x[0:half])
+            branchup = integrate.simps(y[half:-1], x[half:-1])
+        else:
+            branchdown = integrate.trapz(y[0:half], x[0:half])
+            branchup = integrate.trapz(y[half:-1], x[half:-1])
+            result = (branchdown, branchup)
+    return (branchdown, branchup)
+
 
 class Dist:
     """
@@ -99,7 +177,7 @@ class DistCollector:
         for dis_type in self.dis_types:
             self.distrs[dis_type] = dict()
             for diameter in self.diameters:
-               pattern = "%s_%s_%s_00_s*.dat" % (structure, dis_type,diameter)
+               pattern = "%s_%s_%s_t*.dat" % (structure, dis_type,diameter)
                pattern = os.path.join(self._mainDir, pattern)
                filenames = sorted(glob.glob(pattern))
                print('\n'.join(filenames))
@@ -108,6 +186,7 @@ class DistCollector:
                     fname = os.path.join(self._mainDir, filename)
                     thick = self._get_thickness(fname)
                     self.distrs[dis_type][diameter][thick] = Dist(fname)
+               #print( self.distrs["Hyst"]["150"]["75"])
                     
     def plot(self, dis_type,diameter="*",thickness="*", loglog=False):
         """
@@ -154,15 +233,15 @@ class DistCollector:
         # Here we need to explicity say to show the plot
         plt.show()
 
-    def _get_parameters(self, pattern=".dat", n_elements=5):
+    def _get_parameters(self, pattern=".dat", n_elements=4):
         filenames = glob.glob1(self._mainDir, "*")
         filenames = [os.path.splitext(filename)[0] for filename in filenames if pattern.upper() in filename.upper()]
         q = np.concatenate([np.array(filename.split("_")[:n_elements]) for filename in filenames]).flatten()
         q = q.reshape(-1,n_elements)
         self.dis_types = set(q[:,1])
         self.diameters = set(q[:,2])
-        thicknesses = set(q[:,4]) 
-        thicknesses=[thickness.split("s",1)[1] for thickness in thicknesses]
+        thicknesses = set(q[:,3])
+        thicknesses=[thickness.split("t",1)[1] for thickness in thicknesses]
         thicknesses=[ '%s.%s' %(thickness.split("v",1)[0],thickness.split("v",1)[1]) if "v" in thickness else  thickness for thickness in thicknesses]     
         self.thicknesses=thicknesses
         # Here you can add your test (maxLen, etc)
@@ -182,7 +261,7 @@ class DistCollector:
         """
         filename = os.path.splitext(filename)[0] 
         filename = os.path.split(filename)[1] 
-        filename = filename.split("_s")[-1]
+        filename = filename.split("_t")[-1]
         if "v" in filename:
               part1=filename.split("v",1)[0]
               part2=filename.split("v",1)[1]
@@ -237,14 +316,20 @@ class MapsHystEnergy:
             for thick in sorted(self.dist.distrs[dis_type][diam]):
                 points=np.append(points,(int(diam),float(thick)))
                 value=integra(self.dist.distrs[dis_type][diam][thick].x,self.dist.distrs[dis_type][diam][thick].y)
+                (branchdown, branchup)=integraHalf(self.dist.distrs[dis_type][diam][thick].x,self.dist.distrs[dis_type][diam][thick].y)
                 self.energy=2*4*np.pi*1.e-7*value
+                self.branchdown=4*np.pi*1.e-7*branchdown
+                self.branchup = 4 * np.pi * 1.e-7 * branchup
+                (branchdown, branchup) = integra2Half(self.dist.distrs[dis_type][diam][thick].x,self.dist.distrs[dis_type][diam][thick].y)
+                self.branchdown2 = 4 * np.pi * 1.e-7 * branchdown
+                self.branchup2 = 4 * np.pi * 1.e-7 * branchup
                 values=np.append(values,self.energy)
                 print(self.energy,diam,thick)
-                mappatxt=np.append(mappatxt,(int(diam),float(thick),self.energy))
-        mappatxt=np.reshape(mappatxt,(-1,3))
+                mappatxt=np.append(mappatxt,(int(diam),float(thick),self.energy,self.branchup,self.branchdown,self.branchup2,self.branchdown2))
+        mappatxt=np.reshape(mappatxt,(-1,7))
         points=np.reshape(points,(-1,2))
         values=np.reshape(values,(-1,1))
-        np.savetxt(outName,mappatxt[:],"%4d  %4.2f %12.8e")
+        np.savetxt(os.path.join(mainDir, outName),mappatxt[:],"%4d  %4.2f %14.10e  %14.10E  %14.10e %14.10e %14.10e")
         return (points,values)
 
     def plotMap(self):
@@ -265,16 +350,17 @@ class MapsHystEnergy:
         plt.show()
 
 if __name__ == "__main__":
-    mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
-
+    #mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
+    mainDir = "W:\\Micro\\Riccardo\\3D\\Mumax_dot_pillars"
     #mainDir = "/home/gf/src/Python/Python-in-the-lab/students/G4/Riccardo.Ferrero/Python-In-The-Lab_Project-master/Hyst"
 
     dcoll = DistCollector(mainDir)
-    dcoll.plot("Hyst",thickness="20")
-    integ=Integral("dot_Hyst_500_00_s30.dat",mainDir)
+    dcoll.plot("Hyst",thickness="30")
+    #integ=Integral("dot_Hyst_500_00_s30.dat",mainDir)
     maps=MapsHystEnergy(mainDir)
-    maps.plotMap()
-    print(integ.energy)
+    maps.setData()
+    #maps.plotMap()
+    #print(integ.energy)
 
 ##################################################################################################
 ##############################   OLD CODE   ######################################################

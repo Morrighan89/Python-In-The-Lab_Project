@@ -8,15 +8,15 @@ from scipy.interpolate import griddata
 def integra(x,y,method='simps'):
         fullHyst = x[-1] == x[0]
         if fullHyst:
-           middle=int(np.round(x.size/4))
-           top=int(np.round(x.size/2))
+           middle=int(np.round(x.size/2))
+           top=int(np.round(x.size))
            if method=='simps':
                branchup=integrate.simps(y[0:middle],x[0:middle])
                branchdown=integrate.simps(y[middle:top],x[middle:top])
            else:
                branchup=integrate.trapz(y[0:middle],x[0:middle])
                branchdown=integrate.trapz(y[middle:top],x[middle:top])   
-           result=-branchdown-branchup
+           result=(-branchdown-branchup)/2
         else:
             if method=='simps':
                 branchdown=integrate.simps(y,x)
@@ -82,14 +82,16 @@ class Integral:
         self.energy=2*4*np.pi*1.e-7*value
 
 if __name__ == "__main__":
-    mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
-    filename="dot_Hyst_100_00_s20.dat"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Mumax_dot_pillars"
+    mainDir = "W:\\Micro\\Riccardo\\3D\\ring\\150"
+    #mainDir = "W:\\Micro\\2d3d\\dot680\\Hysteresis"
+    filename = "ring_Hyst_150w03t30.txt"
     integ=Integral(filename,mainDir)
     dati=np.array([])
-    dati=np.append(dati,(int(150),int(50),float(2),integ.energy))
-    dati=np.reshape(dati,(-1,4))
+    dati=np.append(dati,(int(150),int(40),integ.energy))
+    dati=np.reshape(dati,(-1,3))
     print(dati)
     outputfile=filename.split(".", 1)[0]+".dat"
     outputfile="Energy_"+outputfile
-    np.savetxt(outputfile,dati,fmt='%4d %4d %4.2f %12.8e',header='diametro numero concentrazione energia')
+    np.savetxt(os.path.join(mainDir, outputfile),dati,fmt='%4d %4d  %12.8e',header='diametro spessore energia')
     print(integ.energy)
