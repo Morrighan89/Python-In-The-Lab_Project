@@ -41,9 +41,9 @@ def calcoloMagnMedia(time,file,Volumes):
     return data
 
 if  __name__ == '__main__':
-    mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\2d3d"
+    mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\2d3d\\preview"
     #mainDir = "S:\\Alessandra\\2D3D"
-    filename= "dot200t20n30_h8_1.h5"
+    filename= "dot200t20n40_2d3d_w3_1.h5"
     outputfile=filename.split(".", 1)[0]+".dat"
     outputfile=outputfile.split("_", 1)[0]+"_Hyst_"+outputfile.split("_", 1)[1]
     print(outputfile)

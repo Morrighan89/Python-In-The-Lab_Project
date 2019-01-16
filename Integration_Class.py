@@ -83,9 +83,11 @@ class Integral:
 
 if __name__ == "__main__":
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Mumax_dot_pillars"
-    mainDir = "W:\\Micro\\Riccardo\\3D\\ring\\150"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\ring\\150"
     #mainDir = "W:\\Micro\\2d3d\\dot680\\Hysteresis"
-    filename = "ring_Hyst_150w03t30.txt"
+    mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d\\completed\\media"
+    #filename = "ring_Hyst_150w03t30.txt"
+    filename = "dot_Hyst_200t20n403d.dat"
     integ=Integral(filename,mainDir)
     dati=np.array([])
     dati=np.append(dati,(int(150),int(40),integ.energy))

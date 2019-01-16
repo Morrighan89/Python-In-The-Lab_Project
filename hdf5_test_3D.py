@@ -64,7 +64,7 @@ def calcoloMagnMediaVsappField(time, file, versoreu, versorev, versorew):
         np.dot(Hext, versorew), np.reshape((0, 0, 1), (1, 3)))
     np.savetxt("uffa", proiezu)
     # print(Hext)
-    Volumes = np.ones(proiezu.shape[0]) * (6.5e-9 * 6.5e-9 * 5.e-9)
+    Volumes = np.ones(proiezu.shape[0]) * (5.e-9 * 5.e-9 * 5.e-9)
     mediau = np.average(proiezu, axis=0, weights=Volumes)
     mediav = np.average(proiezv, axis=0, weights=Volumes)
     mediaw = np.average(proiezw, axis=0, weights=Volumes)
@@ -99,10 +99,11 @@ def calcoloMagnMedia(time, file, versoreu, versorev, versorew):
 if __name__ == '__main__':
     #mainDir = "C:\\Projects\\Sally_adaptive_test_case"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\100\\t30"
-    #mainDir = "W:\\Micro\\Riccardo\\3D\\Square\\200\\45\\parallel"
-    mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d\\preview"
+    mainDir = "W:\\Micro\\Riccardo\\3D\\Square\\200\\45\\tilted\\preview"
+    #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d\\completed\\larga"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Sphere\\100"
 
-    filename = "dot200t20n30_3d.h5"
+    filename = "sq_200_t15_45til_fine2.h5"
     outputplot= filename.split(".", 1)[0] + ".pdf"
     outputplot = outputplot.split("_", 1)[0] + "_Hyst_" + outputplot.split("_", 1)[1]
     outputfile = filename.split(".", 1)[0] + ".dat"
@@ -141,7 +142,7 @@ if __name__ == '__main__':
 
     print(np.shape(outputdata), "np.shape outputdata")
     outputdata = np.reshape(outputdata, (-1, 6))
-    np.savetxt(outputfile, outputdata, fmt='%26.18e')
+    np.savetxt(os.path.join(mainDir, outputfile), outputdata, fmt='%26.18e')
 
     file.close()
 
