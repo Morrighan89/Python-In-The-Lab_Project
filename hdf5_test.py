@@ -40,12 +40,42 @@ def calcoloMagnMedia(time,file,Volumes):
     data=np.append(data, [Hext[0], mediau, Hext[1], mediav, Hext[2], mediaw])
     return data
 
+def calcoloEnergia(time,file,Volumes):
+    data=np.array([])
+    dataset_Magnet   = '/Magnetizzazione%s/Val'%(time)
+    dataset_Hext   = '/Hext%s/Val'%(time)
+    dataset_Hms = '/Hms%s/Val'% (time)
+
+
+    #print(dataset_Magnet)
+    datasetM = file[dataset_Magnet]
+    data_hms= file[dataset_Hms]
+    hms=np.matrix(data_hms[()])
+    data_Hext = file[dataset_Hms]
+    hext = np.matrix(data_Hext[()])
+
+ #   magnetizzazione  = np.matrix(datasetM[0:103,:])
+    magnetizzazione  = np.matrix(datasetM[()])
+
+    enHms=-2*np.pi*1.e-7*np.einsum('ij, ij->i', hms, magnetizzazione)
+    enHms =np.reshape(enHms, (-1, 1))
+    enHms= np.average(enHms,weights=Volumes)
+    enZee=-4*np.pi*1.e-7*np.einsum('ij, ij->i',magnetizzazione, hext)
+    enZee =np.reshape(enZee, (-1, 1))
+    enZee= np.average(enZee,weights=Volumes)
+
+    #print(proiez,i, "\n")
+    datasetH = file[dataset_Hext]
+
+    data=np.append(data,[time, enHms,enZee])
+    return data
 if  __name__ == '__main__':
-    mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\2d3d\\preview"
-    #mainDir = "S:\\Alessandra\\2D3D"
-    filename= "dot200t20n40_2d3d_w3_1.h5"
+    #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\2d3d"
+    mainDir = "S:\\Alessandra\\test"
+    filename= "test100d10_1.h5"
     outputfile=filename.split(".", 1)[0]+".dat"
-    outputfile=outputfile.split("_", 1)[0]+"_Hyst_"+outputfile.split("_", 1)[1]
+    outputHystfile=outputfile.split("_", 1)[0]+"_Hyst_"+outputfile.split("_", 1)[1]
+    outputEnergyfile=outputfile.split("_", 1)[0]+"_Energy_"+outputfile.split("_", 1)[1]
     print(outputfile)
     hdf5_file_name = os.path.join(mainDir, filename)
 
@@ -70,15 +100,21 @@ if  __name__ == '__main__':
     mediaw= np.array([])
     Hexternal=np.array([])
     outputdata=np.array([])
+    outputEner=np.array([])
     Volumes=np.array(datasetVol[()])
     for i in range(1,numTimeSteps):
-
-        outputdata=np.append(outputdata,calcoloMagnMedia(int(i),file,Volumes))
-        
+             outputdata=np.append(outputdata,calcoloMagnMedia(int(i),file,Volumes))
+             outputEner = np.append(outputEner, calcoloEnergia(int(i), file, Volumes))
     print(np.shape(outputdata) , "np.shape outputdata")
-    outputdata = np.reshape(outputdata, (-1, 6))
-    np.savetxt(os.path.join(mainDir, outputfile), outputdata, fmt='%26.18e')
 
+
+
+
+
+    outputdata = np.reshape(outputdata, (-1, 6))
+    outputEner = np.reshape(outputEner, (-1, 3))
+    np.savetxt(os.path.join(mainDir, outputHystfile), outputdata, fmt='%26.18e')
+    np.savetxt(os.path.join(mainDir, outputEnergyfile), outputEner, fmt='%26.18e')
 
     file.close()
 
@@ -94,7 +130,7 @@ if  __name__ == '__main__':
     ax.grid(True)
     #plt.plot(Hexternal, mediau)
     plt.show()
-    #
+
 
 
 

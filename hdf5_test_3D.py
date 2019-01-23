@@ -100,7 +100,7 @@ if __name__ == '__main__':
     #mainDir = "C:\\Projects\\Sally_adaptive_test_case"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\100\\t30"
     mainDir = "W:\\Micro\\Riccardo\\3D\\Square\\200\\45\\tilted\\preview"
-    #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d\\completed\\larga"
+    #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Sphere\\100"
 
     filename = "sq_200_t15_45til_fine2.h5"
