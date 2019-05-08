@@ -46,12 +46,14 @@ class Dist:
                     s_len = len(self.x)
                     self.x, self.y = self.avoid_zeros()
                     print("%i lines deleted" % (s_len - len(self.x)))
+                    self.x, self.y = self.avoid_rep()
         else:
             self.x, self.y = np.loadtxt(filename, comments="#", unpack=True)
             if is_avoid_zeros:
                 s_len = len(self.x)
                 self.x, self.y = self.avoid_zeros()
                 print("%i lines deleted" % (s_len - len(self.x)))
+                self.x, self.y = self.avoid_rep()
         
     
     def avoid_zeros(self):
@@ -68,6 +70,17 @@ class Dist:
         else:
             ax.plot(self.x, self.y, 'o')
 
+    def avoid_rep(self):
+        j=1
+        x=self.x
+        y=self.y
+        for i in range (2,len(self.x)):
+            if (self.x[i]!=self.x[i-1]):
+                x[j] = self.x[i]
+                y[j] = self.y[i]
+                j=j+1
+        return x[1:j], y[1:j]
+
 class Integral:
     """
     Standalone version of integrate class
@@ -83,11 +96,11 @@ class Integral:
 
 if __name__ == "__main__":
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Mumax_dot_pillars"
-    #mainDir = "W:\\Micro\\Riccardo\\3D\\ring\\150"
+    mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles"
     #mainDir = "W:\\Micro\\2d3d\\dot680\\Hysteresis"
-    mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d\\completed\\media"
+    #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d\\completed\\media"
     #filename = "ring_Hyst_150w03t30.txt"
-    filename = "dot_Hyst_200t20n403d.dat"
+    filename = "dot_150_Hyst_70_s25.dat"
     integ=Integral(filename,mainDir)
     dati=np.array([])
     dati=np.append(dati,(int(150),int(40),integ.energy))

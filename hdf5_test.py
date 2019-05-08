@@ -71,8 +71,10 @@ def calcoloEnergia(time,file,Volumes):
     return data
 if  __name__ == '__main__':
     #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\2d3d"
-    mainDir = "S:\\Alessandra\\test"
-    filename= "test100d10_1.h5"
+    mainDir = "S:\\Alessandra\\test\\preview"
+    #mainDir= "W:\\Micro\\2d3d\\SquarePerCfr3D"
+    #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\approx_noapprox"
+    filename= "exact0h10_1.h5"
     outputfile=filename.split(".", 1)[0]+".dat"
     outputHystfile=outputfile.split("_", 1)[0]+"_Hyst_"+outputfile.split("_", 1)[1]
     outputEnergyfile=outputfile.split("_", 1)[0]+"_Energy_"+outputfile.split("_", 1)[1]

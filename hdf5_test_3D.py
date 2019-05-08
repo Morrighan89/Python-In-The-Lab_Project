@@ -99,11 +99,16 @@ def calcoloMagnMedia(time, file, versoreu, versorev, versorew):
 if __name__ == '__main__':
     #mainDir = "C:\\Projects\\Sally_adaptive_test_case"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\100\\t30"
-    mainDir = "W:\\Micro\\Riccardo\\3D\\Square\\200\\45\\tilted\\preview"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Square\\200\\45\\parallel"
     #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Sphere\\100"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Cube\\50"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\timeevolution\\preview"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles"
+    mainDir ="W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\10nm"
 
-    filename = "sq_200_t15_45til_fine2.h5"
+
+    filename = "sw_t10s5_1e-1.h5"
     outputplot= filename.split(".", 1)[0] + ".pdf"
     outputplot = outputplot.split("_", 1)[0] + "_Hyst_" + outputplot.split("_", 1)[1]
     outputfile = filename.split(".", 1)[0] + ".dat"
@@ -117,7 +122,7 @@ if __name__ == '__main__':
     event_number = 5
 
     versoreu = np.array([[1],[0],[0]])
-    versorev = np.array([[0], [1], [0]])
+    versorev = np.array([[0],[1],[0]])
     versorew = np.array([[0],[0],[1]])
     # versoreT=np.reshape(versore,(1,3))
     file = h5py.File(hdf5_file_name, 'r')  # 'r' means that hdf5 file is open in read-only mode

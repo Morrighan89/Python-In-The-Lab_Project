@@ -241,7 +241,7 @@ class DistCollector:
         self.dis_types = set(q[:,1])
         self.diameters = set(q[:,2])
         thicknesses = set(q[:,3])
-        thicknesses=[thickness.split("t",1)[1] for thickness in thicknesses]
+        thicknesses=[thickness.split("s",1)[1] for thickness in thicknesses]
         thicknesses=[ '%s.%s' %(thickness.split("v",1)[0],thickness.split("v",1)[1]) if "v" in thickness else  thickness for thickness in thicknesses]     
         self.thicknesses=thicknesses
         # Here you can add your test (maxLen, etc)
@@ -261,7 +261,7 @@ class DistCollector:
         """
         filename = os.path.splitext(filename)[0] 
         filename = os.path.split(filename)[1] 
-        filename = filename.split("_t")[-1]
+        filename = filename.split("_s")[-1]
         if "v" in filename:
               part1=filename.split("v",1)[0]
               part2=filename.split("v",1)[1]
@@ -351,7 +351,7 @@ class MapsHystEnergy:
 
 if __name__ == "__main__":
     #mainDir = "C:\\Projects\\Git\\Python-In-The-Lab_Project\\Hyst"
-    mainDir = "W:\\Micro\\Riccardo\\3D\\Mumax_dot_pillars"
+    mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles"
     #mainDir = "/home/gf/src/Python/Python-in-the-lab/students/G4/Riccardo.Ferrero/Python-In-The-Lab_Project-master/Hyst"
 
     dcoll = DistCollector(mainDir)
@@ -359,7 +359,7 @@ if __name__ == "__main__":
     #integ=Integral("dot_Hyst_500_00_s30.dat",mainDir)
     maps=MapsHystEnergy(mainDir)
     maps.setData()
-    #maps.plotMap()
+    maps.plotMap()
     #print(integ.energy)
 
 ##################################################################################################
