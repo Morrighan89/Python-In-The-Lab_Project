@@ -41,14 +41,14 @@ class Dist:
                 print("%s file do not exists" % (filename))
                 self.x, self.y=[0,0]
             else:
-                self.x, self.y = np.loadtxt(filename, comments="#", unpack=True)
+                self.x, self.y = np.loadtxt(filename, comments="#", unpack=True, usecols=(0,1))
                 if is_avoid_zeros:
                     s_len = len(self.x)
                     self.x, self.y = self.avoid_zeros()
                     print("%i lines deleted" % (s_len - len(self.x)))
                     self.x, self.y = self.avoid_rep()
         else:
-            self.x, self.y = np.loadtxt(filename, comments="#", unpack=True)
+            self.x, self.y = np.loadtxt(filename, comments="#", unpack=True, usecols=(0,1))
             if is_avoid_zeros:
                 s_len = len(self.x)
                 self.x, self.y = self.avoid_zeros()
@@ -96,14 +96,16 @@ class Integral:
 
 if __name__ == "__main__":
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Mumax_dot_pillars"
-    mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles"
     #mainDir = "W:\\Micro\\2d3d\\dot680\\Hysteresis"
     #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d\\completed\\media"
+    mainDir = "W:\\Micro\\2d3d\\dot150\\n54"
     #filename = "ring_Hyst_150w03t30.txt"
-    filename = "dot_150_Hyst_70_s25.dat"
+    #mainDir = "S:\\Alessandra\\2d3d"
+    filename = "d150t25n54c37_Hyst_1.dat"
     integ=Integral(filename,mainDir)
     dati=np.array([])
-    dati=np.append(dati,(int(150),int(40),integ.energy))
+    dati=np.append(dati,(int(150),int(25),integ.energy))
     dati=np.reshape(dati,(-1,3))
     print(dati)
     outputfile=filename.split(".", 1)[0]+".dat"

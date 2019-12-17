@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="282af8d0-7700-4595-9b95-b0c146ff2647" name="Default" comment="">
+    <list default="true" id="282af8d0-7700-4595-9b95-b0c146ff2647" name="Default" comment="Added energies">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Integration_Class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Integration_Class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/distributions4_corrections.py" beforeDir="false" afterPath="$PROJECT_DIR$/distributions4_corrections.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hdf5_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/hdf5_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hdf5_test_3D.py" beforeDir="false" afterPath="$PROJECT_DIR$/hdf5_test_3D.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hdf5_test_3Dv2.py" beforeDir="false" afterPath="$PROJECT_DIR$/hdf5_test_3Dv2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/uffa" beforeDir="false" afterPath="$PROJECT_DIR$/uffa" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,13 +17,16 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Python-In-The-Lab_Project" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="distributions4.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/distributions4.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="507">
-              <caret line="300" column="44" selection-start-line="300" selection-start-column="28" selection-end-line="300" selection-end-column="44" />
+            <state relative-caret-position="2295">
+              <caret line="140" column="10" selection-start-line="140" selection-start-column="10" selection-end-line="140" selection-end-column="10" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -31,8 +37,8 @@
       <file leaf-file-name="distributions4_alt_name_convention.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/distributions4_alt_name_convention.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2516">
-              <caret line="153" column="83" selection-start-line="153" selection-start-column="20" selection-end-line="153" selection-end-column="83" />
+            <state relative-caret-position="2652">
+              <caret line="161" column="19" selection-start-line="161" selection-start-column="19" selection-end-line="161" selection-end-column="19" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -43,8 +49,8 @@
       <file leaf-file-name="distributions4_corrections.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/distributions4_corrections.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="7" selection-end-column="59" />
+            <state relative-caret-position="-4505">
+              <caret line="62" column="43" lean-forward="true" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -52,20 +58,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mapdata" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mapdata">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="60" selection-start-line="13" selection-start-column="60" selection-end-line="13" selection-end-column="60" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="hdf5_test.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="hdf5_test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hdf5_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="728">
-              <caret line="84" column="22" lean-forward="true" selection-start-line="84" selection-start-column="22" selection-end-line="84" selection-end-column="22" />
+            <state relative-caret-position="-303">
+              <caret line="77" column="38" lean-forward="true" selection-start-line="77" selection-start-column="4" selection-end-line="77" selection-end-column="38" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -76,8 +73,8 @@
       <file leaf-file-name="Integration_Class.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Integration_Class.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1428">
-              <caret line="89" column="16" selection-start-line="89" selection-start-column="16" selection-end-line="89" selection-end-column="36" />
+            <state relative-caret-position="615">
+              <caret line="98" column="58" selection-start-line="98" selection-start-column="58" selection-end-line="98" selection-end-column="58" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -88,8 +85,29 @@
       <file leaf-file-name="hdf5_test_3D.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hdf5_test_3D.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="659">
-              <caret line="105" column="38" selection-start-line="105" selection-start-column="38" selection-end-line="105" selection-end-column="38" />
+            <state relative-caret-position="119">
+              <caret line="11" column="68" selection-start-line="11" selection-start-column="68" selection-end-line="11" selection-end-column="68" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sumMag.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sumMag.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="hdf5_test_3Dv2.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/hdf5_test_3Dv2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1051">
+              <caret line="122" column="72" lean-forward="true" selection-start-line="122" selection-end-line="122" selection-end-column="72" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -99,9 +117,17 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>dot</find>
+      <find>volume</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -111,17 +137,19 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/distributions4.py" />
-        <option value="$PROJECT_DIR$/distributions4_corrections.py" />
-        <option value="$PROJECT_DIR$/Integration_Class.py" />
+        <option value="$PROJECT_DIR$/sumMag.py" />
         <option value="$PROJECT_DIR$/hdf5_test_3D.py" />
+        <option value="$PROJECT_DIR$/Integration_Class.py" />
+        <option value="$PROJECT_DIR$/distributions4_corrections.py" />
         <option value="$PROJECT_DIR$/hdf5_test.py" />
+        <option value="$PROJECT_DIR$/hdf5_test_3Dv2.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="y" value="12" />
-    <option name="width" value="1936" />
+    <option name="x" value="134" />
+    <option name="y" value="11" />
+    <option name="width" value="1575" />
     <option name="height" value="1216" />
   </component>
   <component name="ProjectView">
@@ -134,12 +162,11 @@
           <expand>
             <path>
               <item name="Python-In-The-Lab_Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Python-In-The-Lab_Project" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Python-In-The-Lab_Project" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; Python 3.5 &gt;" type="70bed36:NamedLibraryElementNode" />
             </path>
           </expand>
           <select />
@@ -149,7 +176,21 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MeshAdjust3" />
+    <property name="settings.editor.selected.configurable" value="project.propDebugger" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="Python-In-The-Lab_Project" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="Python-In-The-Lab_Project" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\Git\Python-In-The-Lab_Project" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -163,7 +204,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.hdf5_test">
+  <component name="RunManager" selected="Python.hdf5_test_3Dv2">
     <configuration name="Integration_Class" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Python-In-The-Lab_Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -177,24 +218,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Integration_Class.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
-    <configuration name="distributions4" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Python-In-The-Lab_Project" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/distributions4.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -232,7 +255,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/hdf5_test.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
@@ -254,20 +277,38 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
+    <configuration name="hdf5_test_3Dv2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Python-In-The-Lab_Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/hdf5_test_3Dv2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <list>
       <item itemvalue="Python.hdf5_test_3D" />
       <item itemvalue="Python.distributions4_corrections" />
       <item itemvalue="Python.Integration_Class" />
       <item itemvalue="Python.hdf5_test" />
-      <item itemvalue="Python.distributions4" />
+      <item itemvalue="Python.hdf5_test_3Dv2" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.hdf5_test_3Dv2" />
         <item itemvalue="Python.hdf5_test" />
-        <item itemvalue="Python.hdf5_test_3D" />
-        <item itemvalue="Python.Integration_Class" />
         <item itemvalue="Python.distributions4_corrections" />
-        <item itemvalue="Python.distributions4" />
+        <item itemvalue="Python.hdf5_test_3D" />
+        <item itemvalue="Python.hdf5_test" />
       </list>
     </recent_temporary>
   </component>
@@ -310,31 +351,64 @@
       <option name="project" value="LOCAL" />
       <updated>1524040225889</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added energies">
+      <created>1548237954834</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1548237954834</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added energies and hdf5_3d_v2">
+      <created>1557302318561</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1557302318561</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1186" extended-state="6" />
+    <frame x="-8" y="-8" width="2576" height="1426" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18020834" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5171875" side_tool="true" visible="true" weight="0.19607843" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49947917" weight="0.25823593" />
-      <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4828125" visible="true" weight="0.19607843" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49427083" weight="0.33146593" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7753134" visible="true" weight="0.11899133" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49209693" weight="0.32919848" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50790304" side_tool="true" weight="0.32919848" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.4963119" weight="0.2576336" />
+      <window_info anchor="bottom" id="Python Console" order="7" sideWeight="0.49683878" weight="0.32919848" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4694415" visible="true" weight="0.19487578" />
+      <window_info id="Structure" order="1" sideWeight="0.2246866" side_tool="true" visible="true" weight="0.11899133" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.48630136" weight="0.22709924" />
+      <window_info id="Favorites" order="2" sideWeight="0.2123369" side_tool="true" weight="0.14752372" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.48366702" weight="0.33110687" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
     </layout>
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -369,7 +443,9 @@
     <MESSAGE value="fixed equilibrium points only curve" />
     <MESSAGE value="clean up codice" />
     <MESSAGE value="fixed latex font and &quot;title&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed latex font and &quot;title&quot;" />
+    <MESSAGE value="Added energies" />
+    <MESSAGE value="Added energies and hdf5_3d_v2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added energies and hdf5_3d_v2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -390,19 +466,89 @@
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/hdf5_test.py</url>
-          <line>115</line>
-          <option name="timeStamp" value="33" />
+          <url>file://$PROJECT_DIR$/Integration_Class.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Integration_Class.py</url>
+          <line>93</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Integration_Class.py</url>
+          <line>91</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hdf5_test_3Dv2.py</url>
+          <line>199</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Integration_Class.py</url>
+          <line>8</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Integration_Class.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/hdf5_test.py</url>
-          <line>114</line>
-          <option name="timeStamp" value="34" />
+          <line>156</line>
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hdf5_test_3Dv2.py</url>
+          <line>163</line>
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hdf5_test_3Dv2.py</url>
+          <line>104</line>
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hdf5_test_3Dv2.py</url>
+          <line>168</line>
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hdf5_test_3Dv2.py</url>
+          <line>167</line>
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hdf5_test_3Dv2.py</url>
+          <line>172</line>
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/distributions4_corrections.py</url>
+          <line>168</line>
+          <option name="timeStamp" value="83" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/distributions4_corrections.py</url>
+          <line>358</line>
+          <option name="timeStamp" value="105" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hdf5_test_3Dv2.py</url>
+          <line>196</line>
+          <option name="timeStamp" value="106" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hdf5_test_3Dv2.py</url>
+          <line>192</line>
+          <option name="timeStamp" value="107" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/hdf5_test.py</url>
-          <line>118</line>
-          <option name="timeStamp" value="38" />
+          <line>108</line>
+          <option name="timeStamp" value="108" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -412,45 +558,10 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="40" />
+      <option name="time" value="109" />
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="self.distrs" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/hdf5_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Integration_Class.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1343">
-          <caret line="84" column="4" selection-start-line="84" selection-start-column="4" selection-end-line="84" selection-end-column="58" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/distributions4_corrections.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="7" selection-end-column="59" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hdf5_test_3D.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2890">
@@ -778,24 +889,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Cube100_Hyst_f.dat">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="81" column="161" lean-forward="true" selection-start-line="81" selection-start-column="161" selection-end-line="81" selection-end-column="161" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28271">
-          <caret line="1663" selection-start-line="1663" selection-end-line="1663" />
         </state>
       </provider>
     </entry>
@@ -813,40 +910,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/distributions4_alt_name_convention.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2516">
-          <caret line="153" column="83" selection-start-line="153" selection-start-column="20" selection-end-line="153" selection-end-column="83" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mapdata">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="13" column="60" selection-start-line="13" selection-start-column="60" selection-end-line="13" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/distributions4_corrections.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="7" selection-end-column="59" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Integration_Class.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1428">
-          <caret line="89" column="16" selection-start-line="89" selection-start-column="16" selection-end-line="89" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -859,8 +926,46 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/distributions4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="507">
-          <caret line="300" column="44" selection-start-line="300" selection-start-column="28" selection-end-line="300" selection-end-column="44" />
+        <state relative-caret-position="2295">
+          <caret line="140" column="10" selection-start-line="140" selection-start-column="10" selection-end-line="140" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Continuum/Anaconda3/Lib/site-packages/scipy/integrate/quadrature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="61">
+          <caret line="320" selection-start-line="320" selection-end-line="320" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28271">
+          <caret line="1663" selection-start-line="1663" selection-end-line="1663" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sumMag.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/distributions4_alt_name_convention.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2652">
+          <caret line="161" column="19" selection-start-line="161" selection-start-column="19" selection-end-line="161" selection-end-column="19" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
@@ -869,8 +974,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hdf5_test_3D.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="659">
-          <caret line="105" column="38" selection-start-line="105" selection-start-column="38" selection-end-line="105" selection-end-column="38" />
+        <state relative-caret-position="119">
+          <caret line="11" column="68" selection-start-line="11" selection-start-column="68" selection-end-line="11" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Integration_Class.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="98" column="58" selection-start-line="98" selection-start-column="58" selection-end-line="98" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/distributions4_corrections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4505">
+          <caret line="62" column="43" lean-forward="true" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
@@ -879,8 +1004,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hdf5_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="728">
-          <caret line="84" column="22" lean-forward="true" selection-start-line="84" selection-start-column="22" selection-end-line="84" selection-end-column="22" />
+        <state relative-caret-position="-303">
+          <caret line="77" column="38" lean-forward="true" selection-start-line="77" selection-start-column="4" selection-end-line="77" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hdf5_test_3Dv2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1051">
+          <caret line="122" column="72" lean-forward="true" selection-start-line="122" selection-end-line="122" selection-end-column="72" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>

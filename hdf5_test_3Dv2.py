@@ -53,14 +53,14 @@ class MagnetizationCalc:
         max lenght of string describing the file types to consider
         such in F64ac_freq_filetype.dat
     hysteresis: bool, opt
-        compute hysteresis loop or time evolution (hyst = true (def),  false time evolution)
+        compute hysteresis loop or time evolution (hyst = true (def),  dt=1 (def choice) (false time evolution) dt=0 read dt from file dt= xxx set a specific dt))
     versoreu = np.array([[1],[0],[0]]), opt
     versorev = np.array([[0],[1],[0]]), opt
     versorew = np.array([[0],[0],[1]]), opt
         direction of the applied field
     """
 
-    def __init__(self, mainDir, filename, maxLen=4):
+    def __init__(self, mainDir, filename):
         self._mainDir = mainDir
         self._filename = filename
 
@@ -70,7 +70,7 @@ class MagnetizationCalc:
         self.outputplot = filename.split(".", 1)[0] + ".pdf"
         self.outputplot = self.outputplot.split("_", 1)[0] + "_Hyst_" + self.outputplot.split("_", 1)[1]
         self.outputfile = filename.split(".", 1)[0] + ".dat"
-        self.outputfile = self.outputfile.split("_", 1)[0] + "_Hyst_" + self.outputfile.split("_", 1)[1]
+
 
         print(self.outputfile)
         self.hdf5_file_name = os.path.join(mainDir, filename)
@@ -91,18 +91,32 @@ class MagnetizationCalc:
             numTimeSteps = datasetTime[(0)]
             print(numTimeSteps)
 
-    def computeData(self, hysteresis=True, versoreu = np.array([[1],[0],[0]]), dt=1, versorev = np.array([[0],[1],[0]]), versorew = np.array([[0],[0],[1]])):
+    def computeData(self, hysteresis=True, dt=1, versoreu = np.array([[1],[0],[0]]), versorev = np.array([[0],[1],[0]]), versorew = np.array([[0],[0],[1]])):
         self.outputdata = np.array([])
         if hysteresis:
-            print("dafare")
+            for equilibrium in sorted(self.equilibria):
+                self.outputdata = np.append(self.outputdata, calcoloMagnMediaVsappField(equilibrium, self.file, versoreu, versorev, versorew))
+
+            print(np.shape(self.outputdata), "np.shape outputdata")
+            self.outputdata = np.reshape(self.outputdata, (-1, 6))
+            self.outputfile = self.outputfile.split("_", 1)[0] + "_Hyst_" + self.outputfile.split("_", 1)[1]
+            np.savetxt(os.path.join(self._mainDir, self.outputfile), self.outputdata, fmt='%26.18e')
         else:
             for equilibrium in sorted(self.equilibria):
                 self.outputdata = np.append(self.outputdata, calcoloMagnMedia(equilibrium, self.file, versoreu, versorev, versorew,dt))
 
             print(np.shape(self.outputdata), "np.shape outputdata")
             self.outputdata = np.reshape(self.outputdata, (-1, 4))
+            self.outputfile = self.outputfile.split("_", 1)[0] + "_timeSer_" + self.outputfile.split("_", 1)[1]
             np.savetxt(os.path.join(self._mainDir, self.outputfile), self.outputdata, fmt='%26.18e')
 
+    def plotData(self, hysteresis=True, versoreu=np.array([[1], [0], [0]]), dt=1, versorev=np.array([[0], [1], [0]]), versorew=np.array([[0], [0], [1]])):
+        #interamente da scrivere
+        self.outputdata = np.array([])
+        if hysteresis:
+            print('hysteresis plot')
+        else:
+            print('time plot')
 
 
 
@@ -143,18 +157,23 @@ def calcoloMagnMedia(time, file, versoreu, versorev, versorew,dt=1):
     datasetM = file[dataset_Magnet]
     # print(datasetM.shape, isinstance(datasetM,h5py.Dataset))
     # magnetizzazione  = np.matrix(datasetM[0:103,:])
-    magnetizzazione = np.matrix(datasetM[()])
+    magnetizzazione = np.matrix(datasetM[()],dtype=np.float64)
 
-    proiezu = np.dot(magnetizzazione, versoreu)
-    proiezv = np.dot(magnetizzazione, versorev)
-    proiezw = np.dot(magnetizzazione, versorew)
+    proiezu = np.dot(magnetizzazione, np.float64(versoreu))
+    proiezv = np.dot(magnetizzazione, np.float64(versorev))
+    proiezw = np.dot(magnetizzazione, np.float64(versorew))
     # print(proiezw,i, "\n")
-
+    if dt==0:
+        dataset_timestamp = '/Timestamps'
+        datasetT = file[dataset_timestamp]
+        timestamp=datasetT[(time-1)]
+    else:
+        timestamp=dt*(time-1)
     Volumes = np.ones(proiezu.shape[0]) * (5.e-9 * 5.e-9 * 5.e-9)
     mediau = np.average(proiezu, axis=0, weights=Volumes)
     mediav = np.average(proiezv, axis=0, weights=Volumes)
     mediaw = np.average(proiezw, axis=0, weights=Volumes)
-    data = np.append(data,[dt*(time-1), mediau,  mediav,  mediaw])
+    data = np.append(data,[timestamp, mediau,  mediav,  mediaw])
     return data
 
 if __name__ == '__main__':
@@ -166,14 +185,30 @@ if __name__ == '__main__':
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Cube\\50"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\timeevolution\\preview"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles"
-    #mainDir ="W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\30nm"
-    mainDir="C:\\Riccardo"
+    #mainDir ="W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\20nm\\square\\50nm"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\sigma\\sph100nm"
+    #mainDir="C:\\Riccardo\\workingfolder_article3d\\sq50nm\\t20"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\MuMag4_new"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\oscillator"
+    mainDir = "W:\\Micro\\Riccardo\\3D\\Pallozzi"
 
-
-    filename = "sw_t30s5-30_1e-1.h5"
+    filename = "bl_a200c180h240.h5"
     data = MagnetizationCalc(mainDir,filename)
-    data.computeData(False,dt=0.4e-11)
+    data.computeData(hysteresis=True)
+    #data.computeData( hysteresis = False, dt=0)
+    #data.computeData()
     data.file.close()
+    #filename = "sq50_t20s2v5_1e-4_2.h5"
+    #data = MagnetizationCalc(mainDir, filename)
+    #data.computeData(hysteresis=False, dt=0.2e-11)
+    ## data.computeData()
+    #data.file.close()
+
+    #filename = "sq50_t20s1v25_1e-4.h5"
+    #data = MagnetizationCalc(mainDir, filename)
+    # data.computeData(False,dt=0.2e-11)
+    #data.computeData()
+    #data.file.close()
     # outputplot= filename.split(".", 1)[0] + ".pdf"
     # outputplot = outputplot.split("_", 1)[0] + "_Hyst_" + outputplot.split("_", 1)[1]
     # outputfile = filename.split(".", 1)[0] + ".dat"
