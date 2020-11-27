@@ -177,6 +177,7 @@ def calcoloMagnMedia(time, file, versoreu, versorev, versorew,dt=1):
     return data
 
 if __name__ == '__main__':
+    import math
     #mainDir = "C:\\Projects\\Sally_adaptive_test_case"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\100\\t30"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Square\\200\\45\\parallel"
@@ -186,16 +187,41 @@ if __name__ == '__main__':
     #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\timeevolution\\preview"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles"
     #mainDir ="W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\20nm\\square\\50nm"
-    #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\sigma\\sph100nm"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\sigma\\sph100nm\\review"
     #mainDir="C:\\Riccardo\\workingfolder_article3d\\sq50nm\\t20"
-    #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\MuMag4_new"
-    #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\oscillator"
-    mainDir = "W:\\Micro\\Riccardo\\3D\\Pallozzi"
-
-    filename = "bl_a200c180h240.h5"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\MuMag4_new\\1nm"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\oscillator\\newtesting\\sm"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Pallozzi"
+    mainDir = "W:\\Micro\\Riccardo\\3D\\Tubitak_Fe3O4"
+    #mainDir = "Q:\\Riccardo\\newBlob2"
+    #extensions=["TIM", "h5", "xmf", "MAT", "UTL", "SLZ", "GEO", "EMI","inp"]
+    #for i in range(33,35):
+    #    name='inp'+str(i)
+    #    f = open(os.path.join(mainDir, name+'.inp'), "r")
+    #    caseName=f.readlines()[3].split(".", 1)[0]
+    #    f.close()
+    #    for extension in extensions:
+    #        try:
+    #            os.rename(os.path.join(mainDir, name+'.'+extension),os.path.join(mainDir, caseName+'.'+extension))
+    #        except :
+    #            pass
+    #    print(caseName)
+    #    fileData = caseName+".h5"
+    #    #v1=np.array([[math.cos(math.pi/12)], [math.sin(math.pi/12)], [0]])
+    #    #v2=np.array([[-math.sin(math.pi/12)], [math.cos(math.pi/12)], [0]])
+    #    #v3=np.array([[0], [0], [1]])
+    #    data = MagnetizationCalc(mainDir,fileData)
+    #    data.computeData(hysteresis=True)
+    #    data.file.close()
+    #os.rename(r'file path\OLD file name.file type',r'file path\NEW file name.file type')
+    filename = "sph_Fe3O4_200nmb.h5"
+    #v1=np.array([[math.cos(math.pi/12)], [math.sin(math.pi/12)], [0]])
+    #v2=np.array([[-math.sin(math.pi/12)], [math.cos(math.pi/12)], [0]])
+    #v3=np.array([[0], [0], [1]])
     data = MagnetizationCalc(mainDir,filename)
+    #data.computeData(hysteresis=True,dt=1,versoreu=v1,versorev=v2,versorew=v3)
     data.computeData(hysteresis=True)
-    #data.computeData( hysteresis = False, dt=0)
+    #data.computeData( hysteresis = False, dt=1.e-13)
     #data.computeData()
     data.file.close()
     #filename = "sq50_t20s2v5_1e-4_2.h5"

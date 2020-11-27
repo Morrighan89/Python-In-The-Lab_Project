@@ -96,16 +96,16 @@ class Integral:
 
 if __name__ == "__main__":
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Mumax_dot_pillars"
-    #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles"
+    mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles_new"
     #mainDir = "W:\\Micro\\2d3d\\dot680\\Hysteresis"
     #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d\\completed\\media"
-    mainDir = "W:\\Micro\\2d3d\\dot150\\n54"
+    #mainDir = "W:\\Micro\\2d3d\\dot150\\n54"
     #filename = "ring_Hyst_150w03t30.txt"
     #mainDir = "S:\\Alessandra\\2d3d"
-    filename = "d150t25n54c37_Hyst_1.dat"
+    filename = "dot150_s25_a00_hyst.dat"
     integ=Integral(filename,mainDir)
     dati=np.array([])
-    dati=np.append(dati,(int(150),int(25),integ.energy))
+    dati=np.append(dati,(int(150),int(00),integ.energy))
     dati=np.reshape(dati,(-1,3))
     print(dati)
     outputfile=filename.split(".", 1)[0]+".dat"
