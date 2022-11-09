@@ -10,10 +10,15 @@ Copy the  .py files from this repository in the working folder
 ## Documentation
 
 Three main scripts can be found:
+
   `hdf5_test.py`, which contains the routines and classes to compute the hysteresis cycle of from the 2.5d and 2d simulations;
+  
   `hdf5_test_3Dv2.py`, which contains the routines to compute the hysteresis cycle of from the 3d simulations;
+  
   `distributions4_corrections.py`, which allows to plot the data obtained from the previous scripts;
+  
   `2d3d_Compute_Hyst_SpecificEnergy.py`, Example script puts together hdf5_test class and integral class and uses them to compute the Hysteresis loop and specific energy from the loop.
+  
 ### List of hdf5_test.py functions
 
 """
