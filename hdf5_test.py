@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 Basic script Open a HDF5 file of my simulation and compute the Hysteresis loop, saves data in an opportune file with specific naming pattern
 at the end plots the calculated loop.
 """
-def calcoloMagnMedia(time,file,Volumes):
+def calcoloMagnMedia(time,file,Volumes,versoreu,versorev,versorew):
     data=np.array([])
     dataset_Magnet   = '/Magnetizzazione%s/Val'%(time)
     dataset_Hext   = '/Hext%s/Val'%(time)
@@ -40,7 +40,7 @@ def calcoloMagnMedia(time,file,Volumes):
     data=np.append(data, [Hext[0], mediau, Hext[1], mediav, Hext[2], mediaw])
     return data
 
-def calcoloMagnMediaDisks(time,file,Volumes,numDisks):
+def calcoloMagnMediaDisks(time,file,Volumes,numObj,versoreu,versorev,versorew):
     data=np.array([])
     dataset_Magnet   = '/Magnetizzazione%s/Val'%(time)
     dataset_Hext   = '/Hext%s/Val'%(time)
@@ -67,8 +67,8 @@ def calcoloMagnMediaDisks(time,file,Volumes,numDisks):
                                                                                              (1, 3))) + np.dot(
         np.dot(Hext, versorew), np.reshape((0, 0, 1), (1, 3)))
     #np.savetxt("uffa",proiezu)
-    numElem=int(np.size(magnetizzazione,0)/numDisks)
-    for i in range(1, numDisks+1):
+    numElem=int(np.size(magnetizzazione,0)/numObj)
+    for i in range(1, numObj+1):
         mediau=np.average(proiezu[(i-1)*numElem : i*numElem-1],weights=Volumes[(i-1)*numElem:i*numElem-1])
         mediav=np.average(proiezv[(i-1)*numElem : i*numElem-1],weights=Volumes[(i-1)*numElem:i*numElem-1])
         mediaw=np.average(proiezw[(i-1)*numElem : i*numElem-1],weights=Volumes[(i-1)*numElem:i*numElem-1])
@@ -104,90 +104,98 @@ def calcoloEnergia(time,file,Volumes):
 
     data=np.append(data,[time, enHms,enZee])
     return data
-if  __name__ == '__main__':
+
+class hdf5_test:
+    def __init__(self,mainDir,filename,numObj=1,versoreu = np.array([[1],[0],[0]]),versorev = np.array([[1],[0],[0]]),versorew = np.array([[1],[0],[0]])):
+        self.mainDir=mainDir
+        outputfile=filename.split(".", 1)[0]+".dat"
+        self.outputHystfile=f'{outputfile.split("_", 1)[0]}_Hyst_{outputfile.split("_", 1)[1]}'
+        self.outputEnergyfile=f'{outputfile.split("_", 1)[0]}_Energy_{outputfile.split("_", 1)[1]}'
+        print(outputfile)
+        hdf5_file_name = os.path.join(mainDir, filename)
+
+
+        dataset_numTimeSteps ='/Timesteps/TimeSteps#'
+        dataset_Volumes ='/Volumes'
+        #event_number   = 5
+
+
+        self.file    = h5py.File(hdf5_file_name, 'r')   # 'r' means that hdf5 file is open in read-only mode
+
+        datasetTime=self.file[dataset_numTimeSteps]
+        datasetVol=self.file[dataset_Volumes]
+        self.numTimeSteps= datasetTime[(0)]
+        print(self.numTimeSteps)
+        self.mediau= np.array([])
+        self.mediav= np.array([])
+        self.mediaw= np.array([])
+        self.Hexternal=np.array([])
+        self.outputdata=np.array([])
+        self.outputdata2 = np.array([])
+        self.outputEner=np.array([])
+        self.Volumes=np.array(datasetVol[()])
+        self.u=versoreu
+        self.v=versorev
+        self.w=versorew
+    # for i in range(1,numTimeSteps):
+    #          #outputdata=np.append(outputdata,calcoloMagnMedia(int(i),file,Volumes))
+    #          #outputEner = np.append(outputEner, calcoloEnergia(int(i), file, Volumes))
+    #          outputdata = np.append(outputdata, calcoloMagnMediaDisks(int(i), file, Volumes,numObj))
+    # print(np.shape(outputdata) , "np.shape outputdata")
+    #
+    # outputdata = np.reshape(outputdata, (-1, 6*(numObj)))
+    # #outputEner = np.reshape(outputEner, (-1, 3))
+    # #np.savetxt(os.path.join(mainDir, outputHystfile), outputdata, fmt='%26.18e')
+    # #np.savetxt(os.path.join(mainDir, outputEnergyfile), outputEner, fmt='%26.18e')
+    # for i in range(1, numObj+1):
+    #     outputHystfile = outputfile.split("_", 1)[0] + "_Hyst_" + str(i) +"_"+ outputfile.split("_", 1)[1]
+    #     np.savetxt(os.path.join(mainDir, outputHystfile), outputdata[:, (i-1)*6:i*6], fmt='%26.18e')
+
+
+    def compute(self):
+        for i in range(1,self.numTimeSteps):
+                 self.outputdata2=np.append(self.outputdata2,calcoloMagnMedia(int(i),self.file,self.Volumes,self.u,self.v,self.w))
+                 #outputEner = np.append(outputEner, calcoloEnergia(int(i), file, Volumes))
+                 #outputdata = np.append(outputdata, calcoloMagnMediaDisks(int(i), file, Volumes,numObj))
+        print(np.shape(self.outputdata2) , "np.shape outputdata")
+
+        self.outputdata2 = np.reshape(self.outputdata2, (-1, 6))
+        #outputEner = np.reshape(outputEner, (-1, 3))
+        #np.savetxt(os.path.join(mainDir, outputHystfile), outputdata, fmt='%26.18e')
+        #np.savetxt(os.path.join(mainDir, outputEnergyfile), outputEner, fmt='%26.18e')
+
+        np.savetxt(os.path.join(self.mainDir, self.outputHystfile), self.outputdata2, fmt='%26.18e')
+
+        self.file.close()
+
+    def plot(self):
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        lb = "u"
+        ax.plot(self.outputdata2[1:-1, 0]/1000, self.outputdata2[1:-1, 1]/1000, label=lb)
+        lb = "v"
+        ax.plot(self.outputdata2[1:-1, 2]/1000, self.outputdata2[1:-1, 3]/1000, label=lb)
+        lb = "w"
+        ax.plot(self.outputdata2[1:-1, 4]/1000, self.outputdata2[1:-1, 5]/1000, label=lb)
+        ax.legend(numpoints=1)
+        ax.grid(True)
+        #plt.plot(Hexternal, mediau)
+        plt.show()
+
+def main():
     #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\2d3d"
     mainDir = "S:\\Alessandra\\2d3d\\Thermal"
     #mainDir= "W:\\Micro\\2d3d\\SquarePerCfr3D"
     #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\approx_noapprox"
     #mainDir = "W:\\Micro\\2d3d\\dot150\\n54"
     #mainDir = "W:\\Micro\\FePd\\d250"
-    filename= "temp150n30c27d3cont_1.h5"
-    outputfile=filename.split(".", 1)[0]+".dat"
-    outputHystfile=outputfile.split("_", 1)[0]+"_Hyst_"+outputfile.split("_", 1)[1]
-    outputEnergyfile=outputfile.split("_", 1)[0]+"_Energy_"+outputfile.split("_", 1)[1]
-    print(outputfile)
-    hdf5_file_name = os.path.join(mainDir, filename)
+    mainDir= "W:\\Micro\\magnetite\\disks"
+    filename= "d150t30n50c21_1.h5"
+    hystcalc=hdf5_test(mainDir,filename,numObj=50)
+    hystcalc.compute()
+    hystcalc.plot()
 
-    
-    dataset_numTimeSteps ='/Timesteps/TimeSteps#'
-    dataset_Volumes ='/Volumes'
-    event_number   = 5
-
-    versoreu = np.array([[1],[0],[0]])
-    versorev = np.array([[0], [1], [0]])
-    versorew = np.array([[0],[0],[1]])
-
-
-    file    = h5py.File(hdf5_file_name, 'r')   # 'r' means that hdf5 file is open in read-only mode
-    
-    datasetTime=file[dataset_numTimeSteps]
-    datasetVol=file[dataset_Volumes]
-    numTimeSteps= datasetTime[(0)]
-    print(numTimeSteps)
-    mediau= np.array([])
-    mediav= np.array([])
-    mediaw= np.array([])
-    Hexternal=np.array([])
-    outputdata=np.array([])
-    outputdata2 = np.array([])
-    outputEner=np.array([])
-    Volumes=np.array(datasetVol[()])
-    numDisks=30
-    # for i in range(1,numTimeSteps):
-    #          #outputdata=np.append(outputdata,calcoloMagnMedia(int(i),file,Volumes))
-    #          #outputEner = np.append(outputEner, calcoloEnergia(int(i), file, Volumes))
-    #          outputdata = np.append(outputdata, calcoloMagnMediaDisks(int(i), file, Volumes,numDisks))
-    # print(np.shape(outputdata) , "np.shape outputdata")
-    #
-    # outputdata = np.reshape(outputdata, (-1, 6*(numDisks)))
-    # #outputEner = np.reshape(outputEner, (-1, 3))
-    # #np.savetxt(os.path.join(mainDir, outputHystfile), outputdata, fmt='%26.18e')
-    # #np.savetxt(os.path.join(mainDir, outputEnergyfile), outputEner, fmt='%26.18e')
-    # for i in range(1, numDisks+1):
-    #     outputHystfile = outputfile.split("_", 1)[0] + "_Hyst_" + str(i) +"_"+ outputfile.split("_", 1)[1]
-    #     np.savetxt(os.path.join(mainDir, outputHystfile), outputdata[:, (i-1)*6:i*6], fmt='%26.18e')
-
-
-
-    for i in range(1,numTimeSteps):
-             outputdata2=np.append(outputdata2,calcoloMagnMedia(int(i),file,Volumes))
-             #outputEner = np.append(outputEner, calcoloEnergia(int(i), file, Volumes))
-             #outputdata = np.append(outputdata, calcoloMagnMediaDisks(int(i), file, Volumes,numDisks))
-    print(np.shape(outputdata2) , "np.shape outputdata")
-
-    outputdata2 = np.reshape(outputdata2, (-1, 6))
-    #outputEner = np.reshape(outputEner, (-1, 3))
-    #np.savetxt(os.path.join(mainDir, outputHystfile), outputdata, fmt='%26.18e')
-    #np.savetxt(os.path.join(mainDir, outputEnergyfile), outputEner, fmt='%26.18e')
-    outputHystfile = outputfile.split("_", 1)[0] + "_Hyst_" + outputfile.split("_", 1)[1]
-    np.savetxt(os.path.join(mainDir, outputHystfile), outputdata2, fmt='%26.18e')
-
-    file.close()
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    lb = "u"
-    ax.plot(outputdata2[1:-1, 0]/1000, outputdata2[1:-1, 1]/1000, label=lb)
-    lb = "v"
-    ax.plot(outputdata2[1:-1, 2]/1000, outputdata2[1:-1, 3]/1000, label=lb)
-    lb = "w"
-    ax.plot(outputdata2[1:-1, 4]/1000, outputdata2[1:-1, 5]/1000, label=lb)
-    ax.legend(numpoints=1)
-    ax.grid(True)
-    #plt.plot(Hexternal, mediau)
-    plt.show()
-
-
-
+if  __name__ == '__main__':
+    main()
 
 

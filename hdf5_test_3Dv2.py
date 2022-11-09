@@ -191,8 +191,8 @@ if __name__ == '__main__':
     #mainDir="C:\\Riccardo\\workingfolder_article3d\\sq50nm\\t20"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\MuMag4_new\\1nm"
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Article3D\\Sally3D\\oscillator\\newtesting\\sm"
-    #mainDir = "W:\\Micro\\Riccardo\\3D\\Pallozzi"
-    mainDir = "W:\\Micro\\Riccardo\\3D\\Tubitak_Fe3O4"
+    mainDir = "W:\\Micro\\Riccardo\\3D\\Pallozzi"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\Tubitak_Fe3O4"
     #mainDir = "Q:\\Riccardo\\newBlob2"
     #extensions=["TIM", "h5", "xmf", "MAT", "UTL", "SLZ", "GEO", "EMI","inp"]
     #for i in range(33,35):
@@ -214,7 +214,7 @@ if __name__ == '__main__':
     #    data.computeData(hysteresis=True)
     #    data.file.close()
     #os.rename(r'file path\OLD file name.file type',r'file path\NEW file name.file type')
-    filename = "sph_Fe3O4_200nmb.h5"
+    filename = "bl_a025c022h025fzD.h5"
     #v1=np.array([[math.cos(math.pi/12)], [math.sin(math.pi/12)], [0]])
     #v2=np.array([[-math.sin(math.pi/12)], [math.cos(math.pi/12)], [0]])
     #v3=np.array([[0], [0], [1]])

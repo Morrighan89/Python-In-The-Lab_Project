@@ -36,7 +36,7 @@ class Dist:
         # It is better to make general x,y arrays
         
         if not os.path.isfile(filename):
-            filename='%s %s' %(filename.split(".dat",1)[0],".DAT")
+            filename='%s%s' %(filename.split(".dat",1)[0],".DAT")
             if not os.path.isfile(filename):
                 print("%s file do not exists" % (filename))
                 self.x, self.y=[0,0]
@@ -96,19 +96,23 @@ class Integral:
 
 if __name__ == "__main__":
     #mainDir = "W:\\Micro\\Riccardo\\3D\\Mumax_dot_pillars"
-    mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles_new"
+    #mainDir = "W:\\Micro\\Riccardo\\3D\\dot\\150\\Angles_new"
     #mainDir = "W:\\Micro\\2d3d\\dot680\\Hysteresis"
     #mainDir = "W:\\Micro\\Riccardo\\cfr2d3d_3d_random\\3d\\completed\\media"
     #mainDir = "W:\\Micro\\2d3d\\dot150\\n54"
     #filename = "ring_Hyst_150w03t30.txt"
     #mainDir = "S:\\Alessandra\\2d3d"
-    filename = "dot150_s25_a00_hyst.dat"
-    integ=Integral(filename,mainDir)
-    dati=np.array([])
-    dati=np.append(dati,(int(150),int(00),integ.energy))
+    mainDir = "W:\\Micro\\magnetite\\disks\\"
+    concs=['2','5','10','12v9','15','18','21']
+    dati=[]
+    for conc in concs:
+        filename = f'd150t30n50c{conc}z_Hyst_1.dat'
+        integ=Integral(filename,mainDir)
+        #dati=np.array([])
+        dati=np.append(dati,(int(150),int(30),integ.energy))
     dati=np.reshape(dati,(-1,3))
     print(dati)
     outputfile=filename.split(".", 1)[0]+".dat"
-    outputfile="Energy_"+outputfile
+    outputfile="Energy_New"+outputfile
     np.savetxt(os.path.join(mainDir, outputfile),dati,fmt='%4d %4d  %12.8e',header='diametro spessore energia')
     print(integ.energy)
