@@ -37,6 +37,7 @@ def calcoloMagnMedia(time,file,Volumes,versoreu,versorev,versorew):
     mediau=np.average(proiezu,weights=Volumes)
     mediav=np.average(proiezv,weights=Volumes)
     mediaw=np.average(proiezw,weights=Volumes)
+
     data=np.append(data, [Hext[0], mediau, Hext[1], mediav, Hext[2], mediaw])
     return data
 
@@ -106,7 +107,7 @@ def calcoloEnergia(time,file,Volumes):
     return data
 
 class hdf5_test:
-    def __init__(self,mainDir,filename,numObj=1,versoreu = np.array([[1],[0],[0]]),versorev = np.array([[1],[0],[0]]),versorew = np.array([[1],[0],[0]])):
+    def __init__(self,mainDir,filename,numObj=1,versoreu = np.array([[1],[0],[0]]),versorev = np.array([[0],[1],[0]]),versorew = np.array([[0],[0],[1]])):
         self.mainDir=mainDir
         outputfile=filename.split(".", 1)[0]+".dat"
         self.outputHystfile=f'{outputfile.split("_", 1)[0]}_Hyst_{outputfile.split("_", 1)[1]}'
@@ -153,7 +154,7 @@ class hdf5_test:
 
 
     def compute(self):
-        for i in range(1,self.numTimeSteps):
+        for i in range(0,self.numTimeSteps):
                  self.outputdata2=np.append(self.outputdata2,calcoloMagnMedia(int(i),self.file,self.Volumes,self.u,self.v,self.w))
                  #outputEner = np.append(outputEner, calcoloEnergia(int(i), file, Volumes))
                  #outputdata = np.append(outputdata, calcoloMagnMediaDisks(int(i), file, Volumes,numObj))

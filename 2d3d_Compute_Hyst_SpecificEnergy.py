@@ -6,15 +6,16 @@ import hdf5_test
 import Integration_Class
 
 def main():
-    mainDir= "W:\\Micro\\magnetite\\disks"
-    filename= "d150t30n50c21_1.h5"
+    mainDir= "Q:\\Alessandra\\magnetite"
+    filename= "d150t30n50c10T_1.h5"
     u=np.array([[1],[0],[0]])
     v=np.array([[0],[1],[0]])
     w=np.array([[0],[0],[1]])
-    hystcalc=hdf5_test.hdf5_test(mainDir,filename,numObj=50)
+    hystcalc=hdf5_test.hdf5_test(mainDir,filename,numObj=10)
     hystcalc.compute()
     dati=[]
     integ=Integration_Class.Integral(hystcalc.outputHystfile,mainDir)
+    
         #dati=np.array([])
     dati=np.append(dati,(int(150),int(30),integ.energy))
     dati=np.reshape(dati,(-1,3))
