@@ -32,7 +32,7 @@ class Dist:
     This class load the data given a filename
     and gives the possibility to generate a plot with the uploaded data
     """
-    def __init__(self, filename, is_avoid_zeros=True):
+    def __init__(self, filename, is_avoid_zeros=True, is_avoid_rep=False):
         # It is better to make general x,y arrays
         
         if not os.path.isfile(filename):
@@ -46,17 +46,26 @@ class Dist:
                     s_len = len(self.x)
                     self.x, self.y = self.avoid_zeros()
                     print("%i lines deleted" % (s_len - len(self.x)))
-                    #self.x, self.y = self.avoid_rep()
+                if is_avoid_rep:
+                    s_len = len(self.x)
+                    self.x, self.y = self.avoid_rep()
+                    print("%i repeating x lines deleted" % (s_len - len(self.x)))
         else:
             self.x, self.y = np.loadtxt(filename, comments="#", unpack=True, usecols=(0,1))
             if is_avoid_zeros:
                 s_len = len(self.x)
                 self.x, self.y = self.avoid_zeros()
                 print("%i lines deleted" % (s_len - len(self.x)))
-                #self.x, self.y = self.avoid_rep()
+            if is_avoid_rep:
+                s_len = len(self.x)
+                self.x, self.y = self.avoid_rep()
+                print("%i repeating x lines deleted" % (s_len - len(self.x)))
         
     
     def avoid_zeros(self):
+        """
+        Removes y=0 lines
+        """
         is_not_zero = self.y != 0
         x = self.x[is_not_zero]
         y = self.y[is_not_zero]
@@ -74,12 +83,14 @@ class Dist:
         j=1
         x=self.x
         y=self.y
-        for i in range (2,len(self.x)):
+        for i in range (1,len(self.x)):
             if (self.x[i]!=self.x[i-1]):
+                x[j-1] = self.x[i-1]
                 x[j] = self.x[i]
+                y[j-1] = self.y[i-1]
                 y[j] = self.y[i]
                 j=j+1
-        return x[1:j], y[1:j]
+        return x,y
 
 class Integral:
     """
