@@ -11,7 +11,7 @@ def integra(x,y,method='simps'):
            middle=int(np.round(x.size/2))
            top=int(np.round(x.size))
            if method=='simps':
-               branchup=integrate.simps(y[0:middle],x[0:middle])
+               branchup=integrate.simps(y[0:middle+1],x[0:middle+1])
                branchdown=integrate.simps(y[middle:top],x[middle:top])
            else:
                branchup=integrate.trapz(y[0:middle],x[0:middle])
@@ -46,14 +46,14 @@ class Dist:
                     s_len = len(self.x)
                     self.x, self.y = self.avoid_zeros()
                     print("%i lines deleted" % (s_len - len(self.x)))
-                    self.x, self.y = self.avoid_rep()
+                    #self.x, self.y = self.avoid_rep()
         else:
             self.x, self.y = np.loadtxt(filename, comments="#", unpack=True, usecols=(0,1))
             if is_avoid_zeros:
                 s_len = len(self.x)
                 self.x, self.y = self.avoid_zeros()
                 print("%i lines deleted" % (s_len - len(self.x)))
-                self.x, self.y = self.avoid_rep()
+                #self.x, self.y = self.avoid_rep()
         
     
     def avoid_zeros(self):
